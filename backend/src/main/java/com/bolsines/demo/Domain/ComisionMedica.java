@@ -6,4 +6,8 @@ public class ComisionMedica {
     String mail;
     String nombre;
     String telefono;
+
+    public String getDatos() {
+        return this.codigo + " - " + this.direccion + " - " + this.mail + " - " + this.nombre + " - " + this.telefono;
+    }
 }
