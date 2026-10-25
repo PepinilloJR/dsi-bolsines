@@ -20,7 +20,7 @@ public class Empleado {
     }
 
     public Boolean sosGCM() {
-        // cambiar
-        return true;
+        return this.rol.esGCM();
     }
 }
+// Empleado todo correcto menos sos GCM

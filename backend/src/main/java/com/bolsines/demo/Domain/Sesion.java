@@ -8,8 +8,9 @@ public class Sesion {
     Usuario usuario;
 
     public Usuario getUsuarioLogueado() {
-        // 1. 
-        this.usuario.getUsuario().getComisionMedica().getDatos();
+        this.usuario.getUsuario().getCM().getDatos();
         return usuario;
     }
+
+    // todo listo
 }

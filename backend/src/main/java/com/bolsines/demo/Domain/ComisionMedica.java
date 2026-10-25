@@ -11,3 +11,5 @@ public class ComisionMedica {
         return this.codigo + " - " + this.direccion + " - " + this.mail + " - " + this.nombre + " - " + this.telefono;
     }
 }
+
+// todo listo

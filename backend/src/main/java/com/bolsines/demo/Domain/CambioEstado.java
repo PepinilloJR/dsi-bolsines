@@ -10,4 +10,10 @@ public class CambioEstado {
     boolean sosActual() {
         return fechaHoraFin == null;
     }
+
+    boolean sosEnviado() {
+        return estado.esEnviado();
+    }
 }
+
+// Todo listo

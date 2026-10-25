@@ -8,4 +8,7 @@ public class Usuario {
     public Empleado getUsuario() {
         return this.empleado;
     }
+
+// listo pero raro
+
 }
