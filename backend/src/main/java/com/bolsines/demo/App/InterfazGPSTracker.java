@@ -1,10 +1,25 @@
 package com.bolsines.demo.App;
 
-<<<<<<< HEAD:backend/src/main/java/com/bolsines/demo/App/Gestor.java
-public class Gestor {
+import lombok.Data;
 
-=======
+@Data
 public class InterfazGPSTracker {
-    
->>>>>>> ac79aaa83768b359f3509dc7e104aac50cac7874:backend/src/main/java/com/bolsines/demo/App/InterfazGPSTracker.java
+    private String[] apiKeys = {
+        "sk_xtr_9F3a7C21bE6d4A10f2c8e5b7d913",
+        "sk_nav_7b61d9e4c3a2485fae10c77d5b2f",
+        "sk_geo_f2d84a1c9e7345b8a6d1c3f0972e"
+    };
+
+    private Object[][] bolsinLocation;
+
+    private int nroBolsin;
+
+    private String codigoCMO;
+
+    private String codigoCMD;
+
+    public Object[][] enviarDatosLocalizacion() {
+        return null;
+    }
+
 }
