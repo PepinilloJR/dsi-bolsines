@@ -20,7 +20,6 @@ public class ServicioXRT4500L {
                         .queryParam("codigoComisionMedicaOrigen", codigoCMO)
                         .build()).retrieve().body(String.class);
         
-        System.out.println(result);
-        throw new UnsupportedOperationException();
+        return result;
     };
 }

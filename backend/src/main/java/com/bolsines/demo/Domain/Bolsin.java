@@ -11,7 +11,8 @@ public class Bolsin {
     List<CambioEstado> cambiosEstado;
     ComisionMedica origen;
     ComisionMedica destino;
-
+    Double latitud;
+    Double longitud;
     public boolean esTuCMOrigen(ComisionMedica cm) {
         return this.origen.equals(cm);
     }
@@ -32,7 +33,6 @@ public class Bolsin {
         }
         return false;
     }
-    // ta bien
 
     public void modificarBolsin(
             LocalDateTime fecha,
@@ -50,7 +50,8 @@ public class Bolsin {
     // editar segun corresponda, metodo para la maquina de estados??
 
 
-    // Metodos de la maquina de estados - hacer?
+    //TODO:
+    // Metodos de la maquina de estados
 
     public void cerrarBolsin() {
         // Cierra el bolsín y realiza las acciones necesarias

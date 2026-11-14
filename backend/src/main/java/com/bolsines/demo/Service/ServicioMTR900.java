@@ -13,11 +13,11 @@ public class ServicioMTR900 {
         RestClient restClient = RestClient.builder().baseUrl("http://localhost:8080")
                 .defaultHeader("X-API-Key", claveApi).build();
 
-        String result = restClient.get()
+        Object[][] result = restClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/api/geopulse-mtr-900/fetchCargoPositions")
                         .queryParam("numeroBolsin", nroBolsin)
                         .build())
-                .retrieve().body(String.class);
+                .retrieve().body(Object[][].class);
 
         System.out.println(result);
         throw new UnsupportedOperationException();
