@@ -1,12 +1,23 @@
 package com.bolsines.demo.Domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "roles")
 public class Rol {
-    String descripcion;
-    String nombre;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
+    private Integer id;
+
+    private String descripcion;
+
+    private String nombre;
 
     public Boolean esGCM() {
         return this.nombre.equals("GCM");
-    };
+    }
 
     public String getDescripcion() {
         return this.descripcion;
@@ -19,6 +30,7 @@ public class Rol {
     public String getNombre() {
         return this.nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -32,5 +44,4 @@ public class Rol {
     public void delete() {
         this.delete();
     }
-    // Esto se fixea despues
 }
