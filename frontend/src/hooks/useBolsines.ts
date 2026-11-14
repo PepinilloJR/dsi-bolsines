@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
 import type { Bolsin } from "../types/Bolsin";
-import { seedBolsines, MOCK_USE } from "../mocks/seedTest";
+import { seedBolsines } from "../mocks/seedTest";
+import { bolsinesService } from "../services/bolsinesService";
+import { MOCK_USE } from "../api/client";
 
-export const useBolsines = () => {
+type UseBolsinesOptions = {
+  comision?: string;
+  soloDestino?: boolean;
+};
+
+export const useBolsines = (options: UseBolsinesOptions = {}) => {
+  const { comision, soloDestino } = options;
   const [bolsines, setBolsines] = useState<Bolsin[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -13,14 +21,18 @@ export const useBolsines = () => {
         setIsLoading(true);
 
         if (MOCK_USE) {
-          // Simulamos un pequeño delay para que se vea el loading
           await new Promise((r) => setTimeout(r, 300));
-          setBolsines(seedBolsines);
+          const filtered = comision
+            ? seedBolsines.filter((b) =>
+                soloDestino
+                  ? b.codigoComisionMedicaDestino === comision
+                  : b.codigoComisionMedicaOrigen === comision ||
+                    b.codigoComisionMedicaDestino === comision
+              )
+            : seedBolsines;
+          setBolsines(filtered);
         } else {
-          // TODO THIS SHIT COMPLETE
-          const response = await fetch("/api/bolsines");
-          if (!response.ok) throw new Error("Error en la respuesta");
-          const data: Bolsin[] = await response.json();
+          const data = await bolsinesService.listar({ comision, soloDestino });
           setBolsines(data);
         }
 
@@ -34,7 +46,7 @@ export const useBolsines = () => {
     };
 
     fetchBolsines();
-  }, []);
+  }, [comision, soloDestino]);
 
   return { bolsines, isLoading, error };
 };

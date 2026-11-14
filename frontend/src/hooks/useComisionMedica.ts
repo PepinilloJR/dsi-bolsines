@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import type { ComisionMedica } from "../types/ComisionMedica";
-import { seedComisiones, MOCK_USE } from "../mocks/seedTest";
+import { seedComisiones } from "../mocks/seedTest";
+import { comisionesService } from "../services/comisionesService";
+import { MOCK_USE } from "../api/client";
+
 
 export const useComisionMedica = (codigo: string | undefined) => {
   const [comision, setComision] = useState<ComisionMedica | null>(null);
@@ -24,9 +27,7 @@ export const useComisionMedica = (codigo: string | undefined) => {
           if (!found) throw new Error("Comisión no encontrada");
           setComision(found);
         } else {
-          const response = await fetch(`/api/comisiones/${codigo}`);
-          if (!response.ok) throw new Error("Error en la respuesta");
-          const data: ComisionMedica = await response.json();
+          const data = await comisionesService.obtener(codigo);
           setComision(data);
         }
 

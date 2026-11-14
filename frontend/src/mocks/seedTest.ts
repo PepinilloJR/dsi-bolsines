@@ -1,8 +1,6 @@
 import type { Bolsin } from "../types/Bolsin";
 import type { ComisionMedica } from "../types/ComisionMedica";
 
-export const MOCK_USE = true;
-
 // Centro de Córdoba Capital
 const CORDOBA_CENTER = { lat: -31.4201, lng: -64.1888 };
 const RADIUS_KM = 10;
