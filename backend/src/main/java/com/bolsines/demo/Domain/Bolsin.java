@@ -10,16 +10,17 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-
-@Entity 
+@Entity
 @Table(name = "bolsines")
 public class Bolsin {
     LocalDateTime fecha;
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     Integer numeroBolsin;
@@ -31,10 +32,12 @@ public class Bolsin {
     @OneToMany(mappedBy = "bolsin", cascade = CascadeType.ALL)
     List<CambioEstado> cambiosEstado;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "origen_codigo")
     ComisionMedica origen;
-    
-    @OneToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "destino_codigo")
     ComisionMedica destino;
     Double latitud;
     Double longitud;
@@ -74,9 +77,13 @@ public class Bolsin {
     }
     // editar segun corresponda, metodo para la maquina de estados??
 
+<<<<<<< HEAD
 
     //TODO:
     // Metodos de la maquina de estados
+=======
+    // Metodos de la maquina de estados - hacer?
+>>>>>>> 37246af (primeros pasos del gestor)
 
     public void cerrarBolsin() {
         // Cierra el bolsín y realiza las acciones necesarias
@@ -90,7 +97,8 @@ public class Bolsin {
 
     public void darDeBajaBolsin() {
         // Da de baja el bolsín y realiza las acciones necesarias
-        // Por ejemplo, cambiar el estado a "Dado de Baja" o realizar validaciones finales
+        // Por ejemplo, cambiar el estado a "Dado de Baja" o realizar validaciones
+        // finales
     }
 
     public void registrarBolsinEnviado() {
@@ -102,6 +110,5 @@ public class Bolsin {
         // Registra la recepción del bolsín y realiza las acciones necesarias
         // Por ejemplo, cambiar el estado a "Recibido" o realizar validaciones finales
     }
-
 
 }
