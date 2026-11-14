@@ -26,7 +26,7 @@ public class PantallaSeguimientoDeBolsin {
 
     // 1. Buscar Comisión Médica actual
 
-    @PostMapping("/buscar-cm")
+    @GetMapping("/buscar-cm")
     public ResponseEntity<ComisionMedicaResponse>
             buscarCMActualEmpleado() {
 
@@ -38,7 +38,7 @@ public class PantallaSeguimientoDeBolsin {
 
     // 2. Buscar bolsines enviados
 
-    @PostMapping("/buscar-bolsines")
+    @GetMapping("/buscar-bolsines")
     public ResponseEntity<List<BolsinResponse>>
             buscarBolsinesEnviados() {
 
@@ -50,7 +50,7 @@ public class PantallaSeguimientoDeBolsin {
 
     // 3. Buscar localizaciones
 
-    @PostMapping("/buscar-localizaciones")
+    @GetMapping("/buscar-localizaciones")
     public ResponseEntity<List<LocalizacionBolsinResponse>>
             buscarLocalizacionesBolsines() {
 
@@ -62,7 +62,7 @@ public class PantallaSeguimientoDeBolsin {
 
     // 4. Obtener mapa
 
-    @PostMapping("/obtener-mapa")
+    @GetMapping("/obtener-mapa")
     public ResponseEntity<MapaResponse> obtenerMapa() {
 
         MapaResponse respuesta = gestor.obtenerMapa();
@@ -72,7 +72,7 @@ public class PantallaSeguimientoDeBolsin {
 
     // 5. Seleccionar bolsín en el mapa
 
-    @PostMapping("/seleccionar-bolsin")
+    @GetMapping("/seleccionar-bolsin")
     public ResponseEntity<Void> tomarSeleccionBolsinMapa(
             @RequestBody SeleccionarBolsinRequest request) {
 

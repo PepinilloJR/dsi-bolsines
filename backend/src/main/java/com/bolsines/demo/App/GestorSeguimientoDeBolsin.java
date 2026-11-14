@@ -14,16 +14,18 @@ import com.bolsines.demo.Dto.MapaResponse;
 
 import com.bolsines.demo.Repository.IBolsinRepository;
 import com.bolsines.demo.Repository.IEmpleadoRepository;
-
+import com.bolsines.demo.Repository.ISesionRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class GestorSeguimientoDeBolsin {
 
-    private final Sesion sesionActual;
+    private final ISesionRepository sesionRepository;
 
     private final IBolsinRepository bolsinRepository;
     private final IEmpleadoRepository empleadoRepository;
@@ -41,24 +43,26 @@ public class GestorSeguimientoDeBolsin {
     private ComisionMedica CMDestino;
 
     public GestorSeguimientoDeBolsin(
-            Sesion sesionActual,
             IBolsinRepository bolsinRepository,
             IEmpleadoRepository empleadoRepository,
             InterfazGPSTracker interfazGPSTracker,
-            InterfazServicioGoogleMaps interfazServicioGoogleMaps) {
+            InterfazServicioGoogleMaps interfazServicioGoogleMaps,
+            ISesionRepository sesionRepository) {
 
-        this.sesionActual = sesionActual;
         this.bolsinRepository = bolsinRepository;
         this.empleadoRepository = empleadoRepository;
         this.interfazGPSTracker = interfazGPSTracker;
         this.interfazServicioGoogleMaps = interfazServicioGoogleMaps;
+        this.sesionRepository = sesionRepository;
     }
 
     // 1. Buscar Comisión Médica del empleado actual
 
     public ComisionMedicaResponse buscarCMActualEmpleado() {
 
-        Usuario usuario = sesionActual.getUsuarioLogueado();
+        Usuario usuario = sesionRepository.findFirstByFechaHoraFinIsNullOrderByFechaHoraInicioDesc()
+                .map(Sesion::getUsuarioLogueado)
+                .orElseThrow(() -> new IllegalStateException("No existe una sesión activa"));
 
         Empleado empleado = usuario.getUsuario();
 
@@ -66,8 +70,7 @@ public class GestorSeguimientoDeBolsin {
 
         return new ComisionMedicaResponse(
                 CMOrigen.getCodigo(),
-                CMOrigen.getNombre()
-        );
+                CMOrigen.getNombre());
     }
 
     // 2. Buscar bolsines enviados
@@ -88,9 +91,7 @@ public class GestorSeguimientoDeBolsin {
 
                 numerosBolsines.add(
                         new BolsinResponse(
-                                bolsin.obtenerNumeroBolsin()
-                        )
-                );
+                                bolsin.obtenerNumeroBolsin()));
             }
         }
 
@@ -110,8 +111,7 @@ public class GestorSeguimientoDeBolsin {
             Object[] datos = interfazGPSTracker.enviarDatosLocalizacion(
                     API_KEY,
                     bolsin.obtenerNumeroBolsin(),
-                    CMOrigen.getCodigo()
-            );
+                    CMOrigen.getCodigo());
 
             if (datos != null) {
 
@@ -122,14 +122,11 @@ public class GestorSeguimientoDeBolsin {
                                 (Integer) datos[0],
                                 (Double) datos[1],
                                 (Double) datos[2],
-                                (LocalDateTime) datos[3]
-                        )
-                );
+                                (LocalDateTime) datos[3]));
             }
         }
 
-        this.localizacionesBolsines =
-                localizaciones.toArray(new Object[0][]);
+        this.localizacionesBolsines = localizaciones.toArray(new Object[0][]);
 
         return respuesta;
     }
@@ -140,16 +137,15 @@ public class GestorSeguimientoDeBolsin {
     public MapaResponse obtenerMapa() {
 
         /*
-        String mapa = interfazServicioGoogleMaps.obtenerMapa(
-                localizacionesBolsines
-        );
-
-        return new MapaResponse(mapa);
-        */
+         * String mapa = interfazServicioGoogleMaps.obtenerMapa(
+         * localizacionesBolsines
+         * );
+         * 
+         * return new MapaResponse(mapa);
+         */
 
         throw new UnsupportedOperationException(
-                "Aun no implementado."
-        );
+                "Aun no implementado.");
     }
 
     // 5. Tomar selección de bolsín en el mapa
@@ -157,20 +153,17 @@ public class GestorSeguimientoDeBolsin {
     public void tomarSeleccionBolsinMapa(Integer numeroBolsin) {
 
         this.bolsinesSeleccionado = bolsinesEnviados.stream()
-                .filter(bolsin ->
-                        bolsin.obtenerNumeroBolsin().equals(numeroBolsin))
+                .filter(bolsin -> bolsin.obtenerNumeroBolsin().equals(numeroBolsin))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "No se encontró el bolsín seleccionado"
-                ));
+                        "No se encontró el bolsín seleccionado"));
     }
 
     // 6. Obtener correo del GCM de la Comisión Médica destino
 
     private String obtenerEmailGerente() {
 
-        List<Empleado> empleados =
-                empleadoRepository.findByComisionMedica(CMDestino);
+        List<Empleado> empleados = empleadoRepository.findByComisionMedica(CMDestino);
 
         for (Empleado empleado : empleados) {
 
@@ -180,8 +173,7 @@ public class GestorSeguimientoDeBolsin {
         }
 
         throw new IllegalStateException(
-                "No se encontró un GCM en la Comisión Médica de destino"
-        );
+                "No se encontró un GCM en la Comisión Médica de destino");
     }
 
     // 7. Tomar confirmación del correo
