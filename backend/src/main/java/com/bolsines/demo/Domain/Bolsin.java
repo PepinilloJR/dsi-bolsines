@@ -13,15 +13,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 
 @Entity 
 @Table(name = "bolsines")
+@RequiredArgsConstructor
 public class Bolsin {
-    LocalDateTime fecha;
+
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
+    @NonNull
     Integer numeroBolsin;
 
     Integer numeroPrecinto;
@@ -33,11 +38,18 @@ public class Bolsin {
 
     @OneToOne(fetch = FetchType.EAGER)
     ComisionMedica origen;
-    
+
+
     @OneToOne(fetch = FetchType.EAGER)
     ComisionMedica destino;
+    @NonNull
     Double latitud;
+    @NonNull
     Double longitud;
+    @NonNull
+
+    LocalDateTime fecha;
+
     public boolean esTuCMOrigen(ComisionMedica cm) {
         return this.origen.equals(cm);
     }

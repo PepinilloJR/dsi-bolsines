@@ -1,10 +1,13 @@
 package com.bolsines.demo.Implementations;
 
+import com.bolsines.demo.Domain.Bolsin;
 import com.bolsines.demo.Interfaces.IAdaptadorDatosLocalización;
 import com.bolsines.demo.Service.ServicioXRT4500L;
 import lombok.*;
 import tools.jackson.databind.ObjectMapper;
 
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @RequiredArgsConstructor
@@ -22,10 +25,12 @@ public class AdaptadorDatosXTR4500L implements IAdaptadorDatosLocalización {
         this.codigoCMO = codigoCM;
 
         solicitarDatosLocalización();
-        adaptadorDatosLocalizacion();
+        adaptarDatosLocalizacion();
+
+        return datosLocalizaciónAdaptados;
     };
 
-    public void adaptadorDatosLocalizacion() {
+    public void adaptarDatosLocalizacion() {
         ObjectMapper objectMapper = new ObjectMapper();
 
         // estructura que devuelve el servicio
@@ -45,9 +50,18 @@ public class AdaptadorDatosXTR4500L implements IAdaptadorDatosLocalización {
 
         Item[] items = (Item[]) result.items;
 
+        datosLocalizaciónAdaptados = Arrays.stream(items).map(i ->
+        {
+            LocalDateTime fechaHoraUltimaActualizacion = adaptarFechaHora(i.fechaHoraUltimaActualizacion);
 
+            return new Bolsin(i.numeroBolsin, i.latitud, i.longitud, fechaHoraUltimaActualizacion);
+        }).toArray();
 
     };
+
+    public LocalDateTime adaptarFechaHora (String datetime) {
+        return LocalDateTime.parse(datetime);
+    }
 
     public void solicitarDatosLocalización() {
         datosLocalizacionRecibidos = ServicioXRT4500L.getBolsinLocation(APIKey, nroBolsin, codigoCMO);

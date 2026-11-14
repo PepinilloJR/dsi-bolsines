@@ -1,5 +1,6 @@
 package com.bolsines.demo.App;
 
+import com.bolsines.demo.Implementations.AdaptadorDatosXTR4500L;
 import com.bolsines.demo.Interfaces.IAdaptadorDatosLocalización;
 import lombok.Data;
 
@@ -23,7 +24,7 @@ public class InterfazGPSTracker {
 
     private String codigoCMD;
 
-    public Object[][] enviarDatosLocalizacion() {
+    public Object[] enviarDatosLocalizacion() {
         return null;
     }
     
@@ -33,14 +34,16 @@ public class InterfazGPSTracker {
                 .orElse(-1);
 
         if (pos == 0) {
-            // XTR-4500L
+            return new AdaptadorDatosXTR4500L(APIkey);
         }
         else if (pos == 1) {
             // NavTrack QX-7A
-
+            return null;
         } else if (pos == 2) {
             // GeoPulse MTR-900
-
+            return null;
+        } else {
+            return null;
         }
 
 
