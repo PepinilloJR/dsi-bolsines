@@ -7,6 +7,8 @@ import com.bolsines.demo.Domain.Sesion;
 import com.bolsines.demo.Domain.Usuario;
 import com.bolsines.demo.Repository.IBolsinRepository;
 import com.bolsines.demo.Repository.IEmpleadoRepository;
+import jdk.jshell.spi.ExecutionControl;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +109,8 @@ public class GestorSeguimientoDeBolsin {
 
     public String obtenerMapa() {
 
-        return interfazServicioGoogleMaps.obtenerMapa(localizacionesBolsines);
+       /* return interfazServicioGoogleMaps.obtenerMapa(localizacionesBolsines); */
+        throw new UnsupportedOperationException("Aun no implementado.");
     }
 
     public void tomarSeleccionBolsinMapa(Integer numeroBolsin) {
