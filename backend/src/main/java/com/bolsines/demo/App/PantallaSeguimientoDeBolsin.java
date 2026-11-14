@@ -77,7 +77,7 @@ public class PantallaSeguimientoDeBolsin {
             @RequestBody SeleccionarBolsinRequest request) {
 
         gestor.tomarSeleccionBolsinMapa(
-                request.getNumeroBolsin()
+                request.numeroBolsin()
         );
 
         return ResponseEntity.ok().build();
@@ -90,7 +90,7 @@ public class PantallaSeguimientoDeBolsin {
             @RequestBody ConfirmarCorreoRequest request) {
 
         gestor.tomarConfirmacionCorreo(
-                request.getConfirmacion()
+                request.confirmacion()
         );
 
         return ResponseEntity.ok().build();
