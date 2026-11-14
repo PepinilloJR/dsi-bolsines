@@ -118,14 +118,11 @@ public class GestorSeguimientoDeBolsin {
 
     public MapaResponse obtenerMapa() {
 
-<<<<<<< HEAD
-       /* return interfazServicioGoogleMaps.obtenerMapa(localizacionesBolsines); */
+        /*
+         * String mapa = interfazServicioGoogleMaps.obtenerMapa(localizacionesBolsines);
+         * return new MapaResponse(mapa);
+         */
         throw new UnsupportedOperationException("Aun no implementado.");
-=======
-        String mapa = interfazServicioGoogleMaps.obtenerMapa(localizacionesBolsines);
-
-        return new MapaResponse(mapa);
->>>>>>> 414af6e (agregando version del gestor con dto)
     }
 
     public void tomarSeleccionBolsinMapa(Integer numeroBolsin) {
