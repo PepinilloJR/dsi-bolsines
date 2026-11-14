@@ -1,9 +1,11 @@
 package com.bolsines.demo.Domain;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "empleados")
+@NoArgsConstructor
 public class Empleado {
 
     @Id
@@ -40,4 +42,18 @@ public class Empleado {
     public Boolean sosGCM() {
         return this.rol.esGCM();
     }
+
+    public Empleado(
+        String apellido,
+        String mail,
+        String nombre,
+        Rol rol,
+        ComisionMedica comisionMedica) {
+
+    this.apellido = apellido;
+    this.mail = mail;
+    this.nombre = nombre;
+    this.rol = rol;
+    this.comisionMedica = comisionMedica;
+}
 }

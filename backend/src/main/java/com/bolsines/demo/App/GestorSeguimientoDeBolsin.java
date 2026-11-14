@@ -128,7 +128,7 @@ public class GestorSeguimientoDeBolsin {
             }
         }
 
-        this.localizacionesBolsines = localizaciones.toArray(new Object[0][]);
+        this.localizacionesBolsines = localizaciones.toArray();
 
         return respuesta;
     }

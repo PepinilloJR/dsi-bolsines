@@ -1,9 +1,12 @@
 package com.bolsines.demo.Domain;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+
 
 @Entity
 @Table(name = "comisiones_medicas")
+@NoArgsConstructor
 public class ComisionMedica {
 
     @Id
@@ -31,4 +34,16 @@ public class ComisionMedica {
     public String getNombre() {
         return this.nombre;
     }
+
+    public ComisionMedica(
+        String direccion,
+        String mail,
+        String nombre,
+        String telefono) {
+
+    this.direccion = direccion;
+    this.mail = mail;
+    this.nombre = nombre;
+    this.telefono = telefono;
+}
 }
