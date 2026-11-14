@@ -14,16 +14,13 @@ import com.bolsines.demo.Dto.MapaResponse;
 
 import com.bolsines.demo.Repository.IBolsinRepository;
 import com.bolsines.demo.Repository.IEmpleadoRepository;
-import jdk.jshell.spi.ExecutionControl;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-@Service
+
 public class GestorSeguimientoDeBolsin {
 
     private final Sesion sesionActual;
