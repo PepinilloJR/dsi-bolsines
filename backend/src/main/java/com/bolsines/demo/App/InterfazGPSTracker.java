@@ -7,7 +7,10 @@ import lombok.Data;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
+import org.springframework.stereotype.Component;
+
 @Data
+@Component 
 public class InterfazGPSTracker {
     // el orden de las APIKEYS importa para su deteccion, agregar al ultimo toda apikey nueva
     private String[] apiKeys = {
