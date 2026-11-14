@@ -19,28 +19,29 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "bolsines")
 public class Bolsin {
-    LocalDateTime fecha;
+    private LocalDateTime fecha;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    Integer numeroBolsin;
+    private Integer numeroBolsin;
 
-    Integer numeroPrecinto;
+    private Integer numeroPrecinto;
 
-    Double peso;
+    private Double peso;
 
     @OneToMany(mappedBy = "bolsin", cascade = CascadeType.ALL)
-    List<CambioEstado> cambiosEstado;
+    private List<CambioEstado> cambiosEstado;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "origen_codigo")
-    ComisionMedica origen;
+    private ComisionMedica origen;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "destino_codigo")
-    ComisionMedica destino;
-    Double latitud;
-    Double longitud;
+    private ComisionMedica destino;
+    private Double latitud;
+    private Double longitud;
+    
     public boolean esTuCMOrigen(ComisionMedica cm) {
         return this.origen.equals(cm);
     }
@@ -77,13 +78,10 @@ public class Bolsin {
     }
     // editar segun corresponda, metodo para la maquina de estados??
 
-<<<<<<< HEAD
 
     //TODO:
     // Metodos de la maquina de estados
-=======
     // Metodos de la maquina de estados - hacer?
->>>>>>> 37246af (primeros pasos del gestor)
 
     public void cerrarBolsin() {
         // Cierra el bolsín y realiza las acciones necesarias

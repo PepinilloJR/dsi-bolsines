@@ -17,20 +17,25 @@ public class GestorSeguimientoDeBolsin {
 
     private final IBolsinRepository bolsinRepository;
     private final IEmpleadoRepository empleadoRepository;
+    private final InterfazGPSTracker interfazGPSTracker;
 
-    List<Bolsin> bolsinesEnviados;
-    Bolsin bolsinesSeleccionado;
-    ComisionMedica CMOrigen;
-    ComisionMedica CMDestino;
+    private Object[][] localizacionesBolsines;
+
+    private List<Bolsin> bolsinesEnviados;
+    private Bolsin bolsinesSeleccionado;
+    private ComisionMedica CMOrigen;
+    private ComisionMedica CMDestino;
 
     public GestorSeguimientoDeBolsin(
             Sesion sesionActual,
             IBolsinRepository bolsinRepository,
-            IEmpleadoRepository empleadoRepository) {
+            IEmpleadoRepository empleadoRepository,
+            InterfazGPSTracker interfazGPSTracker) {
 
         this.sesionActual = sesionActual;
         this.bolsinRepository = bolsinRepository;
         this.empleadoRepository = empleadoRepository;
+        this.interfazGPSTracker = interfazGPSTracker;
     }
 
     public ComisionMedica buscarCMActualEmpleado() {
