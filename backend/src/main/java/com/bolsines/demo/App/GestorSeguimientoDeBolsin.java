@@ -33,7 +33,7 @@ public class GestorSeguimientoDeBolsin {
     private final InterfazGPSTracker interfazGPSTracker;
     private final InterfazServicioGoogleMaps interfazServicioGoogleMaps;
 
-    private static final String API_KEY = "API_KEY_HARD_CODED";
+    private static final String API_KEY = "sk_xtr_9F3a7C21bE6d4A10f2c8e5b7d913";
 
     private Object[] localizacionesBolsines;
 
@@ -103,6 +103,8 @@ public class GestorSeguimientoDeBolsin {
     // 3. Buscar localizaciones mediante GPS Tracker y Adapter
 
     public List<LocalizacionBolsinResponse> buscarLocalizacionesBolsines() {
+
+        buscarBolsinesEnviados();
 
         List<Object[]> localizaciones = new ArrayList<>();
 
