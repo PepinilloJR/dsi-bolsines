@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.bolsines.demo.App.GestorSeguimientoDeBolsin;
-import com.bolsines.demo.App.GestorSeguimientoDeBolsinFactory;
 import com.bolsines.demo.Domain.Sesion;
 import com.bolsines.demo.Repository.ISesionRepository;
 
