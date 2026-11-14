@@ -16,11 +16,11 @@ public class AdaptadorDatosXTR4500L implements IAdaptadorDatosLocalización {
     final String APIKey;
 
     int nroBolsin;
-    String codigoCMO;
+    int codigoCMO;
     Object[] datosLocalizaciónAdaptados;
     String datosLocalizacionRecibidos;
 
-    public Object[] recibirDatosLocalizacion(int nroBolsin, String codigoCM) {
+    public Object[] recibirDatosLocalizacion(int nroBolsin, int codigoCM) {
         this.nroBolsin = nroBolsin;
         this.codigoCMO = codigoCM;
 

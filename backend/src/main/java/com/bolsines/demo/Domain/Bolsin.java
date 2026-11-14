@@ -16,16 +16,21 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "bolsines")
+@AllArgsConstructor
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Bolsin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // la generacion de id de bolsin es manual para poder mockear con los que estan
+    // en el mock del gps
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     @NonNull
     private Integer numeroBolsin;

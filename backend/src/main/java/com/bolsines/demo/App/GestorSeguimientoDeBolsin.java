@@ -8,11 +8,14 @@ import com.bolsines.demo.Domain.Usuario;
 import com.bolsines.demo.Repository.IBolsinRepository;
 import com.bolsines.demo.Repository.IEmpleadoRepository;
 import jdk.jshell.spi.ExecutionControl;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+@Service
 public class GestorSeguimientoDeBolsin {
 
     private final Sesion sesionActual;
@@ -23,7 +26,8 @@ public class GestorSeguimientoDeBolsin {
     private final InterfazServicioGoogleMaps interfazServicioGoogleMaps;
 
     private static final String API_KEY = "API_KEY_HARD_CODED";
-    private Object[][] localizacionesBolsines;
+
+    private Object[] localizacionesBolsines;
 
     private List<Bolsin> bolsinesEnviados;
     private Bolsin bolsinesSeleccionado;
@@ -77,9 +81,9 @@ public class GestorSeguimientoDeBolsin {
 
     // adapter
     // ver bien como se resuelve
-    public Object[][] buscarLocalizacionesBolsines() {
+    public void buscarLocalizacionesBolsines() {
 
-        List<Object[]> localizaciones = new ArrayList<>();
+        List<Object> localizaciones = new ArrayList<>();
 
         for (Bolsin bolsin : bolsinesEnviados) {
 
@@ -88,21 +92,13 @@ public class GestorSeguimientoDeBolsin {
                     bolsin.obtenerNumeroBolsin(),
                     CMOrigen.getCodigo());
 
-            // TODO
-            //  ESTO YA NO SIRVE
-            /*
-            if (datos != null) {
-                for (Object localizacion : datos) {
-                    localizaciones.add(localizacion);
-                }
-            }
+            Collections.addAll(localizaciones, datos);
 
-             */
+
         }
 
-        this.localizacionesBolsines = localizaciones.toArray(new Object[0][]);
+        this.localizacionesBolsines = localizaciones.toArray();
 
-        return this.localizacionesBolsines;
     }
 
     // generico hasta implementacion de interfaz

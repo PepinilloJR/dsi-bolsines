@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ServicioXRT4500L {
 
-    public static String getBolsinLocation(String claveApi, int nroBolsin, String codigoCMO) {
+    public static String getBolsinLocation(String claveApi, int nroBolsin, int codigoCMO) {
         RestClient restClient= RestClient.builder().baseUrl("http://localhost:8080").
         defaultHeader("X-API-Key", claveApi).build();
 

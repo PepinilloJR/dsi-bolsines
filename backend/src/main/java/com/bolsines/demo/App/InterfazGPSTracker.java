@@ -16,16 +16,19 @@ public class InterfazGPSTracker {
         "sk_geo_f2d84a1c9e7345b8a6d1c3f0972e" // GeoPulse MTR-900
     };
 
-    private Object[][] bolsinLocation;
+   // private Object[][] bolsinLocation;
 
-    private int nroBolsin;
+   // private int nroBolsin;
 
-    private String codigoCMO;
+   // private String codigoCMO;
 
-    private String codigoCMD;
+  //  private String codigoCMD;
 
     public Object[] enviarDatosLocalizacion(String APIKey, int nroBolsin, int codigoCM) {
-        return null;
+        IAdaptadorDatosLocalización adaptadorDatosLocalización = crearAdaptador(APIKey);
+
+
+        return adaptadorDatosLocalización.recibirDatosLocalizacion(nroBolsin, codigoCM);
     }
     
     public IAdaptadorDatosLocalización crearAdaptador(String APIkey) {
