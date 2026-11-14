@@ -23,4 +23,8 @@ public class ComisionMedica {
     public String getDatos() {
         return this.codigo + " - " + this.direccion + " - " + this.mail + " - " + this.nombre + " - " + this.telefono;
     }
+
+    public Integer getCodigo() {
+        return this.codigo;
+    }
 }

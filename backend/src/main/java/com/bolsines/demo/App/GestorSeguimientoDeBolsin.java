@@ -19,6 +19,7 @@ public class GestorSeguimientoDeBolsin {
     private final IEmpleadoRepository empleadoRepository;
     private final InterfazGPSTracker interfazGPSTracker;
 
+    private static final String API_KEY = "API_KEY_HARD_CODED";
     private Object[][] localizacionesBolsines;
 
     private List<Bolsin> bolsinesEnviados;
@@ -67,5 +68,30 @@ public class GestorSeguimientoDeBolsin {
         }
 
         return numerosBolsines;
+    }
+
+    // adapter
+    // ver bien como se resuelve
+    public Object[][] buscarLocalizacionesBolsines() {
+
+        List<Object[]> localizaciones = new ArrayList<>();
+
+        for (Bolsin bolsin : bolsinesEnviados) {
+
+            Object[][] datos = interfazGPSTracker.enviarDatosLocalizacion(
+                    API_KEY,
+                    bolsin.obtenerNumeroBolsin(),
+                    CMOrigen.getCodigo());
+
+            if (datos != null) {
+                for (Object[] localizacion : datos) {
+                    localizaciones.add(localizacion);
+                }
+            }
+        }
+
+        this.localizacionesBolsines = localizaciones.toArray(new Object[0][]);
+
+        return this.localizacionesBolsines;
     }
 }
