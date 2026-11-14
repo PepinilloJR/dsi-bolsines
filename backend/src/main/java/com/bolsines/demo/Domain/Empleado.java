@@ -17,13 +17,13 @@ public class Empleado {
 
     private String nombre;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rol_id")
     private Rol rol;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "comision_medica_codigo")
     private ComisionMedica comisionMedica;
-
 
     public Boolean esTuCM(ComisionMedica cm) {
         return this.comisionMedica.equals(cm);

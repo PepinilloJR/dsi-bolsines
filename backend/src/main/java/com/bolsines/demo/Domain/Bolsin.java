@@ -10,6 +10,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -17,8 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-
-@Entity 
+@Entity
 @Table(name = "bolsines")
 @RequiredArgsConstructor
 public class Bolsin {
@@ -27,28 +28,33 @@ public class Bolsin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     @NonNull
-    Integer numeroBolsin;
+    private Integer numeroBolsin;
 
-    Integer numeroPrecinto;
+    private Integer numeroPrecinto;
 
-    Double peso;
+    private Double peso;
 
     @OneToMany(mappedBy = "bolsin", cascade = CascadeType.ALL)
-    List<CambioEstado> cambiosEstado;
+    private List<CambioEstado> cambiosEstado;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    ComisionMedica origen;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "origen_codigo")
+    private ComisionMedica origen;
 
-
-    @OneToOne(fetch = FetchType.EAGER)
-    ComisionMedica destino;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "destino_codigo")
+    private ComisionMedica destino;
     @NonNull
-    Double latitud;
+
+    private Double latitud;
     @NonNull
-    Double longitud;
+
+    private Double longitud;
+
     @NonNull
 
     LocalDateTime fecha;
+
 
     public boolean esTuCMOrigen(ComisionMedica cm) {
         return this.origen.equals(cm);
@@ -102,7 +108,8 @@ public class Bolsin {
 
     public void darDeBajaBolsin() {
         // Da de baja el bolsín y realiza las acciones necesarias
-        // Por ejemplo, cambiar el estado a "Dado de Baja" o realizar validaciones finales
+        // Por ejemplo, cambiar el estado a "Dado de Baja" o realizar validaciones
+        // finales
     }
 
     public void registrarBolsinEnviado() {
