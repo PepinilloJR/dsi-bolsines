@@ -27,4 +27,8 @@ public class ComisionMedica {
     public Integer getCodigo() {
         return this.codigo;
     }
+    
+    public String getNombre() {
+        return this.nombre;
+    }
 }
