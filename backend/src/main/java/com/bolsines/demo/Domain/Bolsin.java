@@ -41,7 +41,7 @@ public class Bolsin {
     private ComisionMedica destino;
     private Double latitud;
     private Double longitud;
-    
+
     public boolean esTuCMOrigen(ComisionMedica cm) {
         return this.origen.equals(cm);
     }
@@ -63,6 +63,10 @@ public class Bolsin {
         return false;
     }
 
+    public ComisionMedica getDestino() {
+        return this.destino;
+    }
+
     public void modificarBolsin(
             LocalDateTime fecha,
             Integer numeroPrecinto,
@@ -78,8 +82,7 @@ public class Bolsin {
     }
     // editar segun corresponda, metodo para la maquina de estados??
 
-
-    //TODO:
+    // TODO:
     // Metodos de la maquina de estados
     // Metodos de la maquina de estados - hacer?
 
