@@ -1,11 +1,13 @@
 package com.bolsines.demo.Domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "usuarios")
 @NoArgsConstructor
+@Data
 public class Usuario {
 
     @Id

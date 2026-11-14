@@ -82,10 +82,11 @@ public class GestorSeguimientoDeBolsin {
         this.bolsinesEnviados = new ArrayList<>();
 
         List<BolsinResponse> numerosBolsines = new ArrayList<>();
-
+        System.out.println(bolsines.toString());
         for (Bolsin bolsin : bolsines) {
-
+            System.out.println(bolsin.sosEnviado());
             if (bolsin.sosEnviado() && bolsin.esTuCMOrigen(CMOrigen)) {
+
 
                 this.bolsinesEnviados.add(bolsin);
 
