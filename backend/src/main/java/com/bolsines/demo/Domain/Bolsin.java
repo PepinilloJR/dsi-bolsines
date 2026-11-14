@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Bolsin {
 
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     @NonNull
@@ -77,6 +77,10 @@ public class Bolsin {
         return false;
     }
 
+    public ComisionMedica getDestino() {
+        return this.destino;
+    }
+
     public void modificarBolsin(
             LocalDateTime fecha,
             Integer numeroPrecinto,
@@ -95,6 +99,7 @@ public class Bolsin {
 
     //TODO:
     // Metodos de la maquina de estados
+    // Metodos de la maquina de estados - hacer?
 
     public void cerrarBolsin() {
         // Cierra el bolsín y realiza las acciones necesarias

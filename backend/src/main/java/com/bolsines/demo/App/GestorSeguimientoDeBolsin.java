@@ -18,6 +18,7 @@ public class GestorSeguimientoDeBolsin {
     private final IBolsinRepository bolsinRepository;
     private final IEmpleadoRepository empleadoRepository;
     private final InterfazGPSTracker interfazGPSTracker;
+    private final InterfazServicioGoogleMaps interfazServicioGoogleMaps;
 
     private static final String API_KEY = "API_KEY_HARD_CODED";
     private Object[][] localizacionesBolsines;
@@ -31,12 +32,14 @@ public class GestorSeguimientoDeBolsin {
             Sesion sesionActual,
             IBolsinRepository bolsinRepository,
             IEmpleadoRepository empleadoRepository,
-            InterfazGPSTracker interfazGPSTracker) {
+            InterfazGPSTracker interfazGPSTracker,
+            InterfazServicioGoogleMaps interfazServicioGoogleMaps) {
 
         this.sesionActual = sesionActual;
         this.bolsinRepository = bolsinRepository;
         this.empleadoRepository = empleadoRepository;
         this.interfazGPSTracker = interfazGPSTracker;
+        this.interfazServicioGoogleMaps = interfazServicioGoogleMaps;
     }
 
     public ComisionMedica buscarCMActualEmpleado() {
@@ -94,4 +97,48 @@ public class GestorSeguimientoDeBolsin {
 
         return this.localizacionesBolsines;
     }
+
+    // generico hasta implementacion de interfaz
+
+    public String obtenerMapa() {
+
+        return interfazServicioGoogleMaps.obtenerMapa(localizacionesBolsines);
+    }
+
+    public void tomarSeleccionBolsinMapa(Integer numeroBolsin) {
+
+        this.bolsinesSeleccionado = bolsinesEnviados.stream()
+                .filter(bolsin -> bolsin.obtenerNumeroBolsin().equals(numeroBolsin))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No se encontró el bolsín seleccionado"));
+    }
+
+    private String obtenerEmailGerente() {
+
+        List<Empleado> empleados = empleadoRepository.findByComisionMedica(CMDestino);
+
+        for (Empleado empleado : empleados) {
+
+            if (empleado.esTuCM(CMDestino) && empleado.sosGCM()) {
+                return empleado.getEmail();
+            }
+        }
+
+        throw new IllegalStateException(
+                "No se encontró un GCM en la Comisión Médica de destino");
+    }
+
+    public void tomarConfirmacionCorreo(Boolean confirmacion) {
+
+        if (Boolean.TRUE.equals(confirmacion)) {
+
+            this.CMDestino = bolsinesSeleccionado.getDestino();
+
+            String emailGerente = obtenerEmailGerente();
+
+            // Pendiente: llamarCU31(emailGerente);
+        }
+    }
+
 }
