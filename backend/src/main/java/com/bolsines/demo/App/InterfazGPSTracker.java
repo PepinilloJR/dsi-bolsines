@@ -24,7 +24,7 @@ public class InterfazGPSTracker {
 
     private String codigoCMD;
 
-    public Object[] enviarDatosLocalizacion() {
+    public Object[] enviarDatosLocalizacion(String APIKey, int nroBolsin, int codigoCM) {
         return null;
     }
     

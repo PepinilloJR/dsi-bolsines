@@ -81,16 +81,21 @@ public class GestorSeguimientoDeBolsin {
 
         for (Bolsin bolsin : bolsinesEnviados) {
 
-            Object[][] datos = interfazGPSTracker.enviarDatosLocalizacion(
+            Object[] datos = interfazGPSTracker.enviarDatosLocalizacion(
                     API_KEY,
                     bolsin.obtenerNumeroBolsin(),
                     CMOrigen.getCodigo());
 
+            // TODO
+            //  ESTO YA NO SIRVE
+            /*
             if (datos != null) {
-                for (Object[] localizacion : datos) {
+                for (Object localizacion : datos) {
                     localizaciones.add(localizacion);
                 }
             }
+
+             */
         }
 
         this.localizacionesBolsines = localizaciones.toArray(new Object[0][]);
