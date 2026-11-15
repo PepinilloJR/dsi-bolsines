@@ -20,17 +20,12 @@ public class InterfazGPSTracker {
     };
 
    // private Object[][] bolsinLocation;
-
    // private int nroBolsin;
-
    // private String codigoCMO;
-
   //  private String codigoCMD;
 
     public Object[] enviarDatosLocalizacion(String APIKey, int nroBolsin, int codigoCM) {
         IAdaptadorDatosLocalización adaptadorDatosLocalización = crearAdaptador(APIKey);
-
-
         return adaptadorDatosLocalización.recibirDatosLocalizacion(nroBolsin, codigoCM);
     }
     
@@ -51,8 +46,5 @@ public class InterfazGPSTracker {
         } else {
             return null;
         }
-
-
     }
-
 }
