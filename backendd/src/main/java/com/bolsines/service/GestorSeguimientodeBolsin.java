@@ -149,7 +149,7 @@ public class GestorSeguimientodeBolsin {
 
         for (Bolsin b : this.bolsinesEnviados) {
             Object[] datosLoc = interfazGPSTracker.enviarDatosLocalizacion(
-                    this.apiKeys.get(0),
+                    this.apiKeys.get(0),        // NO TOCAR - APIKEY AdaptadorDatosXTR4500L
                     b.getNumeroBolsin(),
                     this.CMOrigen.getCodigo()
             );
