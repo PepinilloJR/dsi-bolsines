@@ -12,7 +12,7 @@ public class Empleado {
 
     @Id
     @Column(nullable = false, unique = true)
-    private String mail;
+    private String email;
 
     private String apellido;
 
@@ -28,12 +28,12 @@ public class Empleado {
 
     public Empleado(
             String apellido,
-            String mail,
+            String email,
             String nombre,
             Rol rol,
             ComisionMedica comisionMedica) {
         this.apellido = apellido;
-        this.mail = mail;
+        this.email = email;
         this.nombre = nombre;
         this.rol = rol;
         this.comisionMedica = comisionMedica;
@@ -48,10 +48,10 @@ public class Empleado {
     }
 
     public String getEmail() {
-        return this.mail;
+        return this.email;
     }
 
-    public Boolean sosGCM() {
+    public boolean sosGCM() {
         return this.rol != null && this.rol.esGCM();
     }
 }

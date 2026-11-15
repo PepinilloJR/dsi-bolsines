@@ -80,6 +80,29 @@ public class Bolsin {
         return this.destino;
     }
 
+    public ComisionMedica getCMDestino() {
+        return this.destino;
+    }
+
+    public Double getLatitud() {
+        return this.latitud;
+    }
+
+    public Double getLongitud() {
+        return this.longitud;
+    }
+
+    public LocalDateTime getFecha() {
+        return this.fecha;
+    }
+
+
+
+
+
+
+
+
     public void modificarBolsin(
             LocalDateTime fecha,
             Integer numeroPrecinto,
@@ -92,6 +115,8 @@ public class Bolsin {
         this.origen = origen;
         this.destino = destino;
     }
+
+
 
     public void cerrarBolsin() {
     }

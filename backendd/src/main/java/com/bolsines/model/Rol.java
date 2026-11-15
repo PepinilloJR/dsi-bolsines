@@ -26,7 +26,7 @@ public class Rol {
         return this.nombre;
     }
 
-    public Boolean esGCM() {
+    public boolean esGCM() {
         return "GCM".equalsIgnoreCase(this.nombre);
     }
 }
