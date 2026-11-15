@@ -19,7 +19,7 @@ import java.util.Optional;
 import com.bolsines.model.Bolsin; */
 
 // @RequiredArgsConstructor
-public class AdaptadorDatosXTR4500L implements IAdaptadorDatosLocalización {
+public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
 
     // Agregación del UML
     private final ServicioXRT4500L servicioXRT4500L; 
@@ -36,7 +36,7 @@ public class AdaptadorDatosXTR4500L implements IAdaptadorDatosLocalización {
     private Object[] datosLocalizacionAdaptados;
 
     // Constructor acorde al UML: + new(claveApi: String) + referencia al cliente HTTP
-    public AdaptadorDatosXTR4500L(String claveApi) {
+    public AdaptadorDatosXTR(String claveApi) {
         this.apiKey = claveApi;
         this.servicioXRT4500L = new ServicioXRT4500L(claveApi);
         this.objectMapper = new ObjectMapper();

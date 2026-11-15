@@ -18,8 +18,6 @@ import org.springframework.web.client.RestClient;
 // @Component
 public class ServicioXRT4500L {
 
-    // Necesario para utilizar en las peticiones
-    // se podría inyectar con values pero bueno quien sabe que quieren de solucion por esta cosa rara que hacemos
     private static final String BASE_URL = "http://localhost:8081";
 
     private final RestClient restClient;
@@ -33,9 +31,9 @@ public class ServicioXRT4500L {
     }
 
     public String getBolsinLocation(
-            String apiKey,
-            int numeroBolsin,
-            String codigoCMO
+        String apiKey,
+        int numeroBolsin,
+        String codigoCMO
     ) {
         String keyToSend = (apiKey != null && !apiKey.isBlank()) ? apiKey : this.defaultApiKey;
 
