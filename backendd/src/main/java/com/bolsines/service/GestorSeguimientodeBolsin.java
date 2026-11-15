@@ -16,8 +16,10 @@ import com.bolsines.dto.response.ComisionResponse;
 import com.bolsines.dto.response.IniciarResponse;
 import com.bolsines.model.Bolsin;
 import com.bolsines.model.ComisionMedica;
+import com.bolsines.model.Empleado;
 import com.bolsines.model.Sesion;
 import com.bolsines.repository.IBolsinRepository;
+import com.bolsines.repository.IEmpleadoRepository;
 import com.bolsines.repository.ISesionRepository;
 
 @Service
@@ -25,6 +27,7 @@ public class GestorSeguimientodeBolsin {
 
     private final ISesionRepository sesionRepository;
     private final IBolsinRepository bolsinRepository;
+    private final IEmpleadoRepository empleadoRepository;
     private final InterfazGPSTracker interfazGPSTracker;
 
     // Esto habría que agregarlo como atributo? 
@@ -39,17 +42,23 @@ public class GestorSeguimientodeBolsin {
     private Sesion actual;
     private List<Bolsin> bolsinesEnviados;
     private ComisionMedica CMOrigen;
+    private Bolsin bolsinSeleccionado;
+
+    private List<Empleado> empleados;
     
     public GestorSeguimientodeBolsin(
         InterfazGPSTracker interfazGPSTracker,
         ISesionRepository sesionRepository,
-        IBolsinRepository bolsinRepository) {
+        IBolsinRepository bolsinRepository,
+        IEmpleadoRepository empleadoRepository) {
 
         this.interfazGPSTracker = interfazGPSTracker;
         this.sesionRepository = sesionRepository;
         this.bolsinRepository = bolsinRepository;
+        this.empleadoRepository = empleadoRepository;
         this.bolsinesEnviados = new ArrayList<>();
         this.CMOrigen = null;
+        this.bolsinSeleccionado = null;
     }
 
     // STUPID FETCH TO VALID THIS STUPID DIAGRAMS TO THIS FUCKING STUPID SUBJECT
@@ -65,6 +74,8 @@ public class GestorSeguimientodeBolsin {
     private void cargarDatos() {
         UUID sesionTestId = UUID.fromString("11111111-1111-1111-1111-111111111111");
         this.actual = sesionRepository.findById(sesionTestId).orElse(null);
+
+        this.empleados = this.empleadoRepository.findAllConRolYComisionMedica();
     }
 
     public IniciarResponse consultarUbicacionBolsines() {
@@ -123,29 +134,15 @@ public class GestorSeguimientodeBolsin {
             if (bolsin.sosEnviado() && bolsin.esTuCMOrigen(this.CMOrigen)) {
 
                 // aca solo por cumplir diagrama llamo a este metodo total y completamente inchequeable
-                // si aca tenemos todo en memoria para que carajo quieren que retorne esto
-                // porque si vamos al caso entonces de ultima guardo una List<int> con los ids de los bolsines
-                // en lugar del bolsin en memoria, pero como con la memoria ram ajena somos todos generosos que viva la pepa
                 bolsin.obtenerNumeroBolsin();
                 this.bolsinesEnviados.add(bolsin);
             }
         }
-
-        // MAPEO TOTALMENTE AL PEDO ASIQUE RETORNA VOID ESTA COSA, SI TOTAL EL GESTOR
-        // SI SEÑORES EL GESTOR GUARDA EN SUS ATRIBUTO UNA REFERENCIA A UNA LISTA EN MEMORIA QUE VA A SER EDITADA POR 
-        // CUALQUIERA QUE HAGA OTRA PETICION
-        // mapea los bolsines enviados recien filtrados hacia los dto
-        // actualmente mapea más de un dato habría que ver si lo limitmos a solo numeros
-        /* return this.bolsinesEnviados.stream()
-                .map(BolsinResponse::fromEntity)
-                .toList(); */
     }
 
-    
-
+    // Metodo que engloba y dispara el bucle para la obtencion d elatitudes y longitudes
     private void buscarLocalizacionesBolsines() {
-
-        this.datosLocalizacionBolsines.clear();
+        this.datosLocalizacionBolsines.clear();    // limpiar lista sino se cachea..
 
         for (Bolsin b : this.bolsinesEnviados) {
             Object[] datosLoc = interfazGPSTracker.enviarDatosLocalizacion(
@@ -158,9 +155,6 @@ public class GestorSeguimientodeBolsin {
                 datosLocalizacionBolsines.add(datosLoc);
 
                 /* / Actualizamos el Bolsin en memoria con los datos adaptados */
-                // cualquier cosa justificamos que nos sirven guardar las posiciones actuales en memoria
-                // y no solamente consultarlo, que si es una mala practica que se vayan a cagar
-                // porque todo el diagrama en si es una mala practica, mucho mas facil y rapido todo al bolsin y listo
                 // posicion[0] es el numero bolsin, esta bien, esta mal? que lo juzgue la historia
                 b.setLatitud((Double) datosLoc[1]);
                 b.setLongitud((Double) datosLoc[2]);
@@ -168,4 +162,71 @@ public class GestorSeguimientodeBolsin {
             }
         }
     }
+
+    // PASO SELEECIONAR BOLSIN
+    public BolsinResponse tomarSeleccionBolsinMapa(Long numeroBolsin) {
+
+        this.bolsinSeleccionado = this.bolsinesEnviados.stream()
+            .filter(bolsin -> bolsin.obtenerNumeroBolsin().equals(numeroBolsin))
+            .findFirst()
+            .orElseThrow(() -> 
+                new IllegalArgumentException("No se encontró el bolsín seleccionado")
+            );
+        
+        return BolsinResponse.fromEntity(bolsinSeleccionado);
+    }
+
+    // PASO TOMAR CONFIRMACION DE CORREO
+    public void tomarConfirmacionCorreo() {
+        String emailGerente = this.obtenerEmailGerente();
+
+        /* Sistema: para informar número de bolsín, fecha y hora de última actualización, y las 
+        coordenadas del bolsín, se incluye al Caso de Uso 31 Notificar ubicación de bolsín. Informa la 
+        ejecución exitosa del caso de uso 31. Fin del caso de uso. */
+        this.llamarCU31(
+            emailGerente,
+            this.bolsinSeleccionado.getNumeroBolsin(),
+            this.bolsinSeleccionado.getFecha(),
+            this.bolsinSeleccionado.getLatitud(),
+            this.bolsinSeleccionado.getLongitud()
+        );
+    }
+
+    private String obtenerEmailGerente() {
+        if (this.bolsinSeleccionado == null || this.empleados == null) {
+            return null;
+        }
+
+        // obtiene CMDestino para filtrar despues
+        ComisionMedica cm = this.bolsinSeleccionado.getCMDestino();
+
+        // filtra el gerente
+        Empleado gcm = null;
+        for (Empleado emp : this.empleados) {
+            if (emp.esTuCM(cm) && emp.sosGCM()) {
+                gcm = emp;
+                break;
+            }
+        }
+
+        return (gcm != null) ? gcm.getEmail() : null;
+    }
+
+
+    private boolean llamarCU31(
+        String emailGerente,
+        Long numeroBolsin,    // int
+        LocalDateTime fechaHoraUltimaActualizacion,    // datetime
+        Double latitud,    // float | double
+        Double longitud    // float | double
+    ) {
+        /* Sistema: para informar número de bolsín, fecha y hora de última actualización, y las 
+        coordenadas del bolsín, se incluye al Caso de Uso 31 Notificar ubicación de bolsín. Informa la 
+        ejecución exitosa del caso de uso 31. Fin del caso de uso. */
+        
+        // InterfazCU(datos) ???
+
+        return true;
+    }
+
 }

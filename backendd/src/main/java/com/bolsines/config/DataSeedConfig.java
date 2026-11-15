@@ -67,9 +67,13 @@ public class DataSeedConfig {
             Empleado emp2 = empleadoRepository.save(new Empleado(
                     "Gómez", "mgomez@srt.gob.ar", "María", rolOperador, cmRos02));
 
+            Empleado emp3 = empleadoRepository.save(new Empleado(
+                    "Gerente", "gerente@srt.gob.ar", "Jorge rente", rolGcm, cmRos02));
+
             // 5. Usuarios
             Usuario user1 = usuarioRepository.save(new Usuario("jperez", "1234", emp1));
             Usuario user2 = usuarioRepository.save(new Usuario("mgomez", "1234", emp2));
+            Usuario user3 = usuarioRepository.save(new Usuario("mGerente", "1234", emp3));
 
             // 6. Sesión activa (fechaHoraFin == null) para jperez (CM-CBA-01)
             Sesion sesionActiva = new Sesion();

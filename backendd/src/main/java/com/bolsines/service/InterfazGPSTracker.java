@@ -1,6 +1,6 @@
 package com.bolsines.service;
 
-import com.bolsines.adapter.impl.AdaptadorDatosXTR4500L;
+import com.bolsines.adapter.impl.AdaptadorDatosXTR;
 import com.bolsines.adapter.IAdaptadorDatosLocalización;
 import lombok.Data;
 
@@ -36,7 +36,7 @@ public class InterfazGPSTracker {
         // que mierda veo, se que lo hicieron por seguir el diagrama, pero que mierda me hacen leer 
         // nonono que mierda tengo que leer por que tenemos que usar unos string como listas
         if (pos == 0) {
-            return new AdaptadorDatosXTR4500L(apiKey);
+            return new AdaptadorDatosXTR(apiKey);
         }
         else if (pos == 1) {
             // NavTrack QX-7A
