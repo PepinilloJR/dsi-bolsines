@@ -22,7 +22,7 @@ public class DataSeedConfig {
     private final IUsuarioRepository usuarioRepository;
     private final ISesionRepository sesionRepository;
     private final IBolsinRepository bolsinRepository;
-    private final ICambioEstadoRepository cambioEstadoRepository;
+    // private final ICambioEstadoRepository cambioEstadoRepository;
 
     @Bean
     public CommandLineRunner initData() {
@@ -35,7 +35,7 @@ public class DataSeedConfig {
             Estado estadoAbierto = estadoRepository.save(new Estado("Bolsin", "Bolsín abierto en origen", "Abierto"));
             Estado estadoCerrado = estadoRepository.save(new Estado("Bolsin", "Bolsín cerrado y precintado", "Cerrado"));
             Estado estadoEnviado = estadoRepository.save(new Estado("Bolsin", "Bolsín en tránsito hacia destino", "Enviado"));
-            Estado estadoRecibido = estadoRepository.save(new Estado("Bolsin", "Bolsín recibido en destino", "Recibido"));
+            estadoRepository.save(new Estado("Bolsin", "Bolsín recibido en destino", "Recibido"));
 
             // 3. Comisiones Médicas (todas las referenciadas en el mock del GPS)
             ComisionMedica cmCba01 = comisionMedicaRepository.save(new ComisionMedica(
@@ -72,8 +72,8 @@ public class DataSeedConfig {
 
             // 5. Usuarios
             Usuario user1 = usuarioRepository.save(new Usuario("jperez", "1234", emp1));
-            Usuario user2 = usuarioRepository.save(new Usuario("mgomez", "1234", emp2));
-            Usuario user3 = usuarioRepository.save(new Usuario("mGerente", "1234", emp3));
+            usuarioRepository.save(new Usuario("mgomez", "1234", emp2));        // user 2
+            usuarioRepository.save(new Usuario("mGerente", "1234", emp3));        // user 3
 
             // 6. Sesión activa (fechaHoraFin == null) para jperez (CM-CBA-01)
             Sesion sesionActiva = new Sesion();

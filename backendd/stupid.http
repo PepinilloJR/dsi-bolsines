@@ -1,7 +1,7 @@
 
 
 ### Iniciar seguimiento (POST - coincide con tu @PostMapping actual)
-POST http://localhost:8080/bolsines/seguimiento/iniciar
+GET http://localhost:8080/bolsines/seguimiento/iniciar
 Accept: application/json
 
 

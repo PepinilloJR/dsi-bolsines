@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.bolsines.dto.response.BolsinResponse;
 import com.bolsines.dto.response.ComisionResponse;
 import com.bolsines.dto.response.IniciarResponse;
+import com.bolsines.dto.response.NotificarEmailResponse;
 import com.bolsines.model.Bolsin;
 import com.bolsines.model.ComisionMedica;
 import com.bolsines.model.Empleado;
@@ -202,7 +203,7 @@ public class GestorSeguimientodeBolsin {
     }
 
     // PASO TOMAR CONFIRMACION DE CORREO
-    public void tomarConfirmacionCorreo() {
+    public NotificarEmailResponse tomarConfirmacionCorreo() {
         String emailGerente = this.obtenerEmailGerente();
 
         /* Sistema: para informar número de bolsín, fecha y hora de última actualización, y las 
@@ -214,6 +215,11 @@ public class GestorSeguimientodeBolsin {
             this.bolsinSeleccionado.getFecha(),
             this.bolsinSeleccionado.getLatitud(),
             this.bolsinSeleccionado.getLongitud()
+        );
+
+        return new NotificarEmailResponse(
+            true,
+            emailGerente
         );
     }
 

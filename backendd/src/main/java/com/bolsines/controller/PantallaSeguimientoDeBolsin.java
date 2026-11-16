@@ -4,6 +4,7 @@ import com.bolsines.dto.response.BolsinResponse;
 // import java.util.List;
 // import com.bolsines.dto.response.ComisionResponse;
 import com.bolsines.dto.response.IniciarResponse;
+import com.bolsines.dto.response.NotificarEmailResponse;
 import com.bolsines.service.GestorSeguimientodeBolsin;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,7 @@ public class PantallaSeguimientoDeBolsin {
 
     private final GestorSeguimientodeBolsin gestorSeguimientodeBolsin;
 
-    @PostMapping("/iniciar")
+    @GetMapping("/iniciar")
     public ResponseEntity<IniciarResponse> opcionConsultarUbicacionBolsines() {
         var c = habilitarPantallaSeguimientoBolsin();
         return ResponseEntity.ok(c);
@@ -44,10 +45,10 @@ public class PantallaSeguimientoDeBolsin {
 
     // 6. Confirmar envío del correo
     @PostMapping("/confirmar-correo")
-    public ResponseEntity<Void> opcionConfirmarCorreo() {
+    public ResponseEntity<NotificarEmailResponse> opcionConfirmarCorreo() {
 
-        gestorSeguimientodeBolsin.tomarConfirmacionCorreo();
-
-        return ResponseEntity.ok().build();
+        // retorna un notifical response para notificarEjecucionExitosa aunque totalmente inchequeable esto
+        var c = gestorSeguimientodeBolsin.tomarConfirmacionCorreo();
+        return ResponseEntity.ok(c);
     }
 }
