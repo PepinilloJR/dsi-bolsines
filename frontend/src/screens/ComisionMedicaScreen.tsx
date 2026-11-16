@@ -21,8 +21,9 @@ import { useComisionMedica } from "../hooks/useComisionMedica";
 import { useBolsines } from "../hooks/useBolsines";
 import type { Bolsin } from "../types/Bolsin";
 
-const FALLBACK_IMAGE =
-  "https://i.pinimg.com/736x/3a/14/7e/3a147e7647d480fb753e684085208344.jpg";
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80";
+// const FALLBACK_IMAGE = "https://i.pinimg.com/736x/3a/14/7e/3a147e7647d480fb753e684085208344.jpg";
+  
 
 // --- Fix típico de Leaflet + Vite ---
 delete (L.Icon.Default.prototype as any)._getIconUrl;

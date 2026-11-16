@@ -1,6 +1,5 @@
 // src/screens/EmailConfirmScreen.tsx
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useMemo } from "react";
 import {
   ArrowLeft,
   Mail,
@@ -10,28 +9,26 @@ import {
   AlertCircle,
   Send,
 } from "lucide-react";
-import { useBolsines } from "../hooks/useBolsines";
+import { useBolsin } from "../hooks/useBolsines";
 import { useComisionMedica } from "../hooks/useComisionMedica";
 import { useEnviarEmailBolsin } from "../hooks/useEnviarEmailBolsin";
+import { useDireccion } from "../hooks/useDirection";
 
 export const EmailConfirmScreen = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { bolsines, isLoading: loadingBolsines } = useBolsines();
-  const bolsin = useMemo(
-    () => bolsines.find((b) => b.id === id),
-    [bolsines, id]
-  );
-
-  // Traemos la comisión destino para mostrar el gerente/email
+  const { bolsin, isLoading: loadingBolsin } = useBolsin(id);
   const { comision: comisionDestino, isLoading: loadingComision } =
     useComisionMedica(bolsin?.codigoComisionMedicaDestino);
-
   const { estado, error, destinatario, enviar } = useEnviarEmailBolsin();
+  const { direccion, cargando: cargandoDir } = useDireccion(
+    bolsin?.latitud,
+    bolsin?.longitud
+  );
 
   // --- Loading inicial ---
-  if (loadingBolsines || loadingComision) {
+  if (loadingBolsin || loadingComision) {
     return (
       <div className="max-w-3xl mx-auto p-6 text-center text-gray-500">
         <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" />
@@ -112,8 +109,14 @@ export const EmailConfirmScreen = () => {
               <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
               <span>
                 Ubicación informada:{" "}
-                <span className="font-mono text-xs text-gray-700">
-                  {bolsin.latitud.toFixed(6)}, {bolsin.longitud.toFixed(6)}
+                {direccion && (
+                  <span className="font-medium text-gray-800">
+                    {direccion} ·{" "}
+                  </span>
+                )}
+                <span className="font-mono text-xs text-gray-500">
+                  Lat: {bolsin.latitud.toFixed(6)} | Lng:{" "}
+                  {bolsin.longitud.toFixed(6)}
                 </span>
               </span>
             </div>
@@ -122,7 +125,9 @@ export const EmailConfirmScreen = () => {
 
         <div className="flex justify-end">
           <button
-            onClick={() => navigate(`/comisiones/${bolsin.codigoComisionMedicaOrigen}`)}
+            onClick={() =>
+              navigate(`/comisiones/${bolsin.codigoComisionMedicaOrigen}`)
+            }
             className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer"
           >
             Volver a la comisión
@@ -195,7 +200,7 @@ export const EmailConfirmScreen = () => {
         </div>
 
         <div className="p-6 space-y-4 text-sm">
-          <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 space-y-2">
+          <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 space-y-2.5">
             <div className="flex items-start gap-3">
               <span className="text-gray-500 w-24 shrink-0">Bolsín:</span>
               <span className="font-medium text-gray-800">
@@ -205,6 +210,7 @@ export const EmailConfirmScreen = () => {
                 </span>
               </span>
             </div>
+
             <div className="flex items-start gap-3">
               <span className="text-gray-500 w-24 shrink-0">CM Destino:</span>
               <span className="font-medium text-gray-800">
@@ -217,17 +223,30 @@ export const EmailConfirmScreen = () => {
                 )}
               </span>
             </div>
+
+            {/* 
             <div className="flex items-start gap-3">
               <span className="text-gray-500 w-24 shrink-0">Gerente:</span>
               <span className="font-medium text-gray-800 break-all">
                 {comisionDestino?.email ?? "—"}
               </span>
             </div>
+            */}
+
             <div className="flex items-start gap-3">
               <span className="text-gray-500 w-24 shrink-0">Ubicación:</span>
-              <span className="font-mono text-xs text-gray-700">
-                {bolsin.latitud.toFixed(6)}, {bolsin.longitud.toFixed(6)}
-              </span>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                <span className="font-medium text-gray-800">
+                  {cargandoDir
+                    ? "Buscando calle..."
+                    : direccion ?? "Ubicación sin calle exacta"}
+                </span>
+                <span className="hidden sm:inline text-gray-300">|</span>
+                <span className="font-mono text-xs text-gray-500">
+                  Lat: {bolsin.latitud.toFixed(6)} | Lng:{" "}
+                  {bolsin.longitud.toFixed(6)}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -239,8 +258,7 @@ export const EmailConfirmScreen = () => {
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
           <button
             onClick={() => navigate(-1)}
-            className="bg-white border border-gray-200 text-gray-700 px-5 py-2 rounded-lg 
-              font-medium hover:bg-gray-100 transition-colors cursor-pointer"
+            className="bg-white border border-gray-200 text-gray-700 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors cursor-pointer"
           >
             Cancelar
           </button>
@@ -249,9 +267,7 @@ export const EmailConfirmScreen = () => {
               comisionDestino?.email && enviar(bolsin, comisionDestino.email)
             }
             disabled={!comisionDestino?.email}
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2 
-              rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-300 
-              disabled:cursor-not-allowed cursor-pointer"
+            className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed cursor-pointer"
           >
             <Send className="w-4 h-4" />
             Confirmar envío

@@ -53,6 +53,10 @@ export const HomeScreen = () => {
         </div>
       </div>
 
+
+
+
+
       {/* --- TARJETAS DE ACCESO RÁPIDO --- */}
       <div className="bg-white border-t border-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

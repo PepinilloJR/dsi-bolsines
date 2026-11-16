@@ -1,7 +1,14 @@
 import { Outlet, Link } from "react-router-dom";
-import { Package, LogIn } from "lucide-react";
+import { Package, LogIn, User } from "lucide-react";
 
 export const Layout = () => {
+  // Simulación de sesión activa (coincide con el seed del backend)
+  const usuarioLogueado = {
+    nombre: "Juan Pérez",
+    email: "jperez@srt.gob.ar",
+    comision: "CM-CBA-01",
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
       {/* --- BARRA DE NAVEGACIÓN --- */}
@@ -16,11 +23,31 @@ export const Layout = () => {
                 Logística<span className="text-blue-600">App</span>
               </span>
             </Link>
+
             <div>
-              <button className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-                <LogIn className="w-4 h-4" />
-                Iniciar Sesión
-              </button>
+              {usuarioLogueado ? (
+                <div className="flex items-center gap-3">
+                  <div className="text-right hidden sm:block">
+                    <p className="text-sm font-medium text-gray-800 leading-none">
+                      {usuarioLogueado.nombre}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {usuarioLogueado.email} ·{" "}
+                      <span className="font-semibold text-blue-600">
+                        {usuarioLogueado.comision}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="bg-blue-50 border border-blue-200 p-2 rounded-full text-blue-600">
+                    <User className="w-4 h-4" />
+                  </div>
+                </div>
+              ) : (
+                <button className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+                  <LogIn className="w-4 h-4" />
+                  Iniciar Sesión
+                </button>
+              )}
             </div>
           </div>
         </div>
