@@ -29,6 +29,7 @@ public class GestorSeguimientodeBolsin {
     private final IBolsinRepository bolsinRepository;
     private final IEmpleadoRepository empleadoRepository;
     private final InterfazGPSTracker interfazGPSTracker;
+    private final InterfazServicioGoogleMaps interfazGoogleMaps;
 
     // Esto habría que agregarlo como atributo? 
     private List<Object[]> datosLocalizacionBolsines = new ArrayList<>();
@@ -39,20 +40,23 @@ public class GestorSeguimientodeBolsin {
         "sk_geo_f2d84a1c9e7345b8a6d1c3f0972e"  // GeoPulse MTR-900
     );
 
+    //! =========== Atributos del diagrama =========================
     private Sesion actual;
     private List<Bolsin> bolsinesEnviados;
     private ComisionMedica CMOrigen;
     private Bolsin bolsinSeleccionado;
-
     private List<Empleado> empleados;
     
+
     public GestorSeguimientodeBolsin(
         InterfazGPSTracker interfazGPSTracker,
         ISesionRepository sesionRepository,
         IBolsinRepository bolsinRepository,
-        IEmpleadoRepository empleadoRepository) {
+        IEmpleadoRepository empleadoRepository,
+        @org.springframework.beans.factory.annotation.Value("${google.maps.api-key:}") String googleApiKey) {
 
         this.interfazGPSTracker = interfazGPSTracker;
+        this.interfazGoogleMaps = new InterfazServicioGoogleMaps(googleApiKey);
         this.sesionRepository = sesionRepository;
         this.bolsinRepository = bolsinRepository;
         this.empleadoRepository = empleadoRepository;
@@ -89,10 +93,7 @@ public class GestorSeguimientodeBolsin {
         // esto es el metodo que envuelve llamar a los metodos del adapter
         this.buscarLocalizacionesBolsines();
 
-        // transformar para la respuesta y preparar una respuesta gigante unificaada
-        // si alguno no le gusta que me avise asi lo mando a la mierda, no mentira es charlable
-        // pero como realmente depende de modificar el diagrama prefiero que devuelva todo de una me entendes
-        // o sea es para simplificarnos la vida, yo codeo para vos, para ganar, por blg, por messi
+        // transformar para la respuesta y preparar una respuesta gigante unificaada, charlable si dividirlo
         List<BolsinResponse> bolsinesToDto = this.bolsinesEnviados.stream()
                 .map(BolsinResponse::fromEntity)
                 .toList();
@@ -100,12 +101,12 @@ public class GestorSeguimientodeBolsin {
         // terminar de ver la parte de Google, realmente no hace falta que haga nada porq ue el front 
         // trabaja con latitudes y longitudes pero no se que hizo joaco capaz salio algo bueno quien sabe
         // que sabre yo
-        String googleService = "Aca Llamamos a Google";
+        Object[][] mapa = this.obtenerMapa();
 
         return new IniciarResponse(
             ComisionResponse.fromEntity(comisionResponse), 
             bolsinesToDto,
-            googleService
+            mapa
         );
     }
 
@@ -162,6 +163,30 @@ public class GestorSeguimientodeBolsin {
             }
         }
     }
+
+    private Object[][] obtenerMapa() {
+        // 1. Armamos la matriz de 6 columnas que exige InterfazServicioGoogleMaps
+        Object[][] matrizLocalizaciones = new Object[this.bolsinesEnviados.size()][6];
+
+        for (int i = 0; i < this.bolsinesEnviados.size(); i++) {
+            Bolsin b = this.bolsinesEnviados.get(i);
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.NUMERO_BOLSIN] = b.getNumeroBolsin().intValue();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.LATITUD] = b.getLatitud();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.LONGITUD] = b.getLongitud();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.FECHA_HORA_ULTIMA_ACTUALIZACION] =
+                    b.getFecha() != null ? b.getFecha().toString() : null;
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.NUMERO_PRECINTO] = b.getNumeroPrecinto();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.CODIGO_CM_DESTINO] =
+                    b.getDestino() != null ? b.getDestino().getCodigo() : null;
+        }
+
+        // 2. Llamamos a la interfaz de Google Maps (filtra ubicables y ajusta coordenadas)
+        Object[][] mapa = this.interfazGoogleMaps.obtenerMapa(matrizLocalizaciones);
+
+        return mapa;
+    }
+
+
 
     // PASO SELEECIONAR BOLSIN
     public BolsinResponse tomarSeleccionBolsinMapa(Long numeroBolsin) {

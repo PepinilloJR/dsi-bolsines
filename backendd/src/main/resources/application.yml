@@ -2,6 +2,14 @@ server:
   port: 8080
 
 spring:
+  # creen un archivo application-local.yml con la key
+  # profiles:
+  #  active: local
+
+  # o usen en .env con la key ustedes elijan qsy
+  config:
+    import: optional:file:.env[.properties]
+
   datasource:
     url: jdbc:h2:mem:bolsinesdb
     driver-class-name: org.h2.Driver
@@ -10,10 +18,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update  # update
     show-sql: true
 
   h2:
     console:
       enabled: true
       path: /h2-console
+
+# usen un .env no sean tan vagos la concha de sus mamis
+google:
+  maps:
+    api-key: ${GOOGLE_MAPS_API_KEY:CREA_EL_ENV}

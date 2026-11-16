@@ -13,8 +13,3 @@ Accept: application/json
 ###
 POST http://localhost:8080/bolsines/seguimiento/confirmar-correo
 Accept: application/json
-
-
-### Iniciar seguimiento (GET - en caso de que cambies a @GetMapping)
-GET http://localhost:8080/bolsines/seguimiento/iniciar
-Accept: application/json
