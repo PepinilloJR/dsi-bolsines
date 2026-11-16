@@ -34,6 +34,7 @@ export const useEnviarEmailBolsin = (): UseEnviarEmailBolsinResult => {
           await new Promise((r) => setTimeout(r, 2000));
           setDestinatario(gerenteEmail);
         } else {
+          
           const data = await emailService.enviarUbicacionBolsin({
             bolsinId: bolsin.id,
             gerenteEmail,

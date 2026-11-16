@@ -50,3 +50,45 @@ export const useBolsines = (options: UseBolsinesOptions = {}) => {
 
   return { bolsines, isLoading, error };
 };
+
+
+// traer solo por id
+export const useBolsin = (id?: string) => {
+  const [bolsin, setBolsin] = useState<Bolsin | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) {
+      setBolsin(null);
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchBolsin = async () => {
+      try {
+        setIsLoading(true);
+
+        if (MOCK_USE) {
+          await new Promise((r) => setTimeout(r, 300));
+          const found = seedBolsines.find((b) => b.id === id) ?? null;
+          setBolsin(found);
+        } else {
+          const data = await bolsinesService.obtener(id);
+          setBolsin(data);
+        }
+
+        setError(null);
+      } catch (err) {
+        setError("Error al cargar el bolsín seleccionado");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBolsin();
+  }, [id]);
+
+  return { bolsin, isLoading, error };
+};
