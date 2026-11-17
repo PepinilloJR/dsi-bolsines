@@ -25,7 +25,8 @@ public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
     private final ServicioXRT4500L servicioXRT4500L; 
 
     // agregado por seguir la boludes de que devuelva un string el cliente
-    private final ObjectMapper objectMapper;
+    // NO HACE FALTA COMO ATRIBUTO
+    //private final ObjectMapper objectMapper;
 
     // @Value("${gps.api.key}")
     private String apiKey;
@@ -39,7 +40,7 @@ public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
     public AdaptadorDatosXTR(String claveApi) {
         this.apiKey = claveApi;
         this.servicioXRT4500L = new ServicioXRT4500L(claveApi);
-        this.objectMapper = new ObjectMapper();
+        //this.objectMapper = new ObjectMapper();
     }
 
     public String getApiKey() {
@@ -75,6 +76,7 @@ public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
         }
 
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
             // mapea a la entrada como List<DTO>
             XtrBolsinLocationResponseDto dto = objectMapper.readValue(
                     this.datosLocalizacionRecibidos,
