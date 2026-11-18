@@ -1,6 +1,7 @@
 package com.bolsines.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 // import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +43,10 @@ public class GestorSeguimientodeBolsin {
     );
 
     //! =========== Atributos del diagrama =========================
-    private Sesion actual;
+    private Sesion sesionActual;
     private List<Bolsin> bolsinesEnviados;
-    private ComisionMedica CMOrigen;
+    private ComisionMedica cmOrigen;
+
     private Bolsin bolsinSeleccionado;
     private List<Empleado> empleados;
     
@@ -62,7 +64,7 @@ public class GestorSeguimientodeBolsin {
         this.bolsinRepository = bolsinRepository;
         this.empleadoRepository = empleadoRepository;
         this.bolsinesEnviados = new ArrayList<>();
-        this.CMOrigen = null;
+        this.cmOrigen = null;
         this.bolsinSeleccionado = null;
     }
 
@@ -71,6 +73,7 @@ public class GestorSeguimientodeBolsin {
     public void onApplicationEvent() {
         cargarDatos();
     }
+    
     /* @EventListener(ContextRefreshedEvent.class)
     public void onApplicationEvent(ContextRefreshedEvent event) {
         cargarDatos();
@@ -78,7 +81,7 @@ public class GestorSeguimientodeBolsin {
 
     private void cargarDatos() {
         UUID sesionTestId = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        this.actual = sesionRepository.findById(sesionTestId).orElse(null);
+        this.sesionActual = sesionRepository.findById(sesionTestId).orElse(null);
 
         this.empleados = this.empleadoRepository.findAllConRolYComisionMedica();
     }
@@ -86,7 +89,7 @@ public class GestorSeguimientodeBolsin {
     public IniciarResponse consultarUbicacionBolsines() {
         ComisionMedica comisionResponse = this.buscarCMActualEmpleado();
         // por algun motivo aca quieren que guardemos esta referncia o es o parece qsy nadie sabe del verbo saber
-        this.CMOrigen = comisionResponse;
+        this.cmOrigen = comisionResponse;
 
         // retorna void y setea en memoria this.bolsinesEnviado (???????????????????????????)
         this.buscarBolsinesEnviado();
@@ -112,37 +115,33 @@ public class GestorSeguimientodeBolsin {
     }
 
     private ComisionMedica buscarCMActualEmpleado() {
-        // stupid check
-        if (this.actual == null) {
-            cargarDatos();
-        }
-        if (this.actual == null) {
+        // esto no es parte del diagrama, pero era un check por si no se tenían los datos en memoria al iniciar
+        // a veces pasaba
+        if (this.sesionActual == null) { cargarDatos(); }
+        if (this.sesionActual == null) {
             return null;
         }
-        return this.actual.getUsuarioLogueado();
-        // ComisionMedica cm = this.actual.getCMUsuarioLogueado();
+        return this.sesionActual.getUsuarioLogueado();
     }
 
-    // 2. Buscar bolsines enviados
+    // 2. Buscar Bolsines Enviados
     public void buscarBolsinesEnviado() {
-        // trae todos los bolsines precargados con joins a los cambio estado y los estados 
-        // asi poder filtrar todo en memoria, porque claro para que vamos a filtrar en la base 
-        // de datos que usamos para persistir total 
+        // Trae todos los bolsines con sus objetos relacionados en memoria
         List<Bolsin> bolsines = bolsinRepository.findAllConEstados();
-        this.bolsinesEnviados.clear();    // limpiar lista sino se acumula..
+        // como variable porque lo dijo FRAN 
+        this.bolsinesEnviados.clear();            // limpiar lista sino se acumula en memoria.
 
         for (Bolsin bolsin : bolsines) {
-            // filtra por cambios de estado con estados en true ; 
-            if (bolsin.sosEnviado() && bolsin.esTuCMOrigen(this.CMOrigen)) {
+            // Filtra por cambiosEstado con Estados en Enviado; 
+            if (bolsin.sosEnviado() && bolsin.esTuCMOrigen(this.cmOrigen)) {
 
-                // aca solo por cumplir diagrama llamo a este metodo total y completamente inchequeable
                 bolsin.obtenerNumeroBolsin();
                 this.bolsinesEnviados.add(bolsin);
             }
         }
     }
 
-    // Metodo que engloba y dispara el bucle para la obtencion d elatitudes y longitudes
+    // 3. Metodo que engloba y dispara el bucle para la obtencion de latitudes y longitudes
     private void buscarLocalizacionesBolsines() {
         this.datosLocalizacionBolsines.clear();    // limpiar lista sino se cachea..
 
@@ -150,7 +149,7 @@ public class GestorSeguimientodeBolsin {
             Object[] datosLoc = interfazGPSTracker.enviarDatosLocalizacion(
                     this.apiKeys.get(0),        // NO TOCAR - APIKEY AdaptadorDatosXTR4500L
                     b.getNumeroBolsin(),
-                    this.CMOrigen.getCodigo()
+                    this.cmOrigen.getCodigo()
             );
 
             if (datosLoc != null && datosLoc.length >= 4) {
@@ -210,11 +209,11 @@ public class GestorSeguimientodeBolsin {
         coordenadas del bolsín, se incluye al Caso de Uso 31 Notificar ubicación de bolsín. Informa la 
         ejecución exitosa del caso de uso 31. Fin del caso de uso. */
         this.llamarCU31(
-            emailGerente,
-            this.bolsinSeleccionado.getNumeroBolsin(),
-            this.bolsinSeleccionado.getFecha(),
-            this.bolsinSeleccionado.getLatitud(),
-            this.bolsinSeleccionado.getLongitud()
+            emailGerente,        // String
+            this.bolsinSeleccionado.getNumeroBolsin(),    // int
+            this.bolsinSeleccionado.getFecha(),    // Datetime
+            this.bolsinSeleccionado.getLatitud(),    // double
+            this.bolsinSeleccionado.getLongitud()    // double
         );
 
         return new NotificarEmailResponse(
@@ -244,6 +243,8 @@ public class GestorSeguimientodeBolsin {
     }
 
 
+    
+
     private boolean llamarCU31(
         String emailGerente,
         Long numeroBolsin,    // int
@@ -254,7 +255,16 @@ public class GestorSeguimientodeBolsin {
         /* Sistema: para informar número de bolsín, fecha y hora de última actualización, y las 
         coordenadas del bolsín, se incluye al Caso de Uso 31 Notificar ubicación de bolsín. Informa la 
         ejecución exitosa del caso de uso 31. Fin del caso de uso. */
-        
+        String.format(
+            "NOTIFICACIÓN CU-31 [UBICACIÓN DE BOLSÍN]: Se ha enviado un alerta al Gerente de la CM Destino (%s) " +
+            "informando que el bolsín N° %d registró su última actualización el día %s en las coordenadas geográficas " +
+            "[Lat: %.6f, Lon: %.6f]. Operación completada con éxito.",
+            emailGerente,
+            numeroBolsin,
+            fechaHoraUltimaActualizacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),
+            latitud,
+            longitud
+        );
         // InterfazCU(datos) ???
 
         return true;

@@ -33,15 +33,27 @@ public class Sesion {
     }
 
     public ComisionMedica getUsuarioLogueado() {
-        if (this.usuario != null && this.usuario.getUsuario() != null) {
-            ComisionMedica cm = this.usuario.getUsuario().getCM();
+        if (this.usuario != null) {
+            Empleado emp = this.usuario.getUsuario();
+            ComisionMedica cm = emp.getCM();
+            // Ejecuta el mensaje del diagrama de secuencia
             if (cm != null) {
-                cm.getDatos(); // Ejecuta el mensaje del diagrama de secuencia
+                cm.getDatos(); 
             }
             return cm;
         }
         return null;
     }
+
+
+    public LocalDateTime getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+
+    public LocalDateTime getFechaHoraInicio() {
+        return fechaHoraInicio;
+    }
+
 
     /* public ComisionMedica getCMUsuarioLogueado() {
         return this.getUsuario().getCMUsuarioLogueado();

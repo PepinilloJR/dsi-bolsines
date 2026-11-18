@@ -19,8 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Bolsin {
 
-    @Id
     // Generación manual para mockear con los IDs del GPS
+    @Id
     @Column(nullable = false, unique = true)
     @NonNull
     private Long numeroBolsin;
@@ -99,10 +99,6 @@ public class Bolsin {
 
 
 
-
-
-
-
     public void modificarBolsin(
             LocalDateTime fecha,
             Integer numeroPrecinto,
@@ -115,8 +111,6 @@ public class Bolsin {
         this.origen = origen;
         this.destino = destino;
     }
-
-
 
     public void cerrarBolsin() {
     }
@@ -131,5 +125,44 @@ public class Bolsin {
     }
 
     public void registrarRecepcionDeBolsin() {
+    }
+
+
+
+    /* getter y setters */
+    public Integer getNumeroPrecinto() {
+        return numeroPrecinto;
+    }
+
+    public void setNumeroPrecinto(Integer numeroPrecinto) {
+        this.numeroPrecinto = numeroPrecinto;
+    }
+
+    public Double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Double peso) {
+        this.peso = peso;
+    }
+
+    public List<CambioEstado> getCambiosEstado() {
+        return cambiosEstado;
+    }
+
+    public void setCambiosEstado(List<CambioEstado> cambiosEstado) {
+        this.cambiosEstado = cambiosEstado;
+    }
+
+    public ComisionMedica getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(ComisionMedica origen) {
+        this.origen = origen;
+    }
+
+    public void setDestino(ComisionMedica destino) {
+        this.destino = destino;
     }
 }

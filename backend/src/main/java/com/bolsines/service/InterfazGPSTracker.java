@@ -33,8 +33,7 @@ public class InterfazGPSTracker {
                 .filter(key -> apiKey.equals(apiKeys[key])).findFirst()
                 .orElse(-1);
 
-        // que mierda veo, se que lo hicieron por seguir el diagrama, pero que mierda me hacen leer 
-        // nonono que mierda tengo que leer por que tenemos que usar unos string como listas
+        // adaptado por el diagrama
         if (pos == 0) {
             return new AdaptadorDatosXTR(apiKey);
         }

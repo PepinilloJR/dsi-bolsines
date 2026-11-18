@@ -1,22 +1,12 @@
 package com.bolsines.adapter.impl;
 
-
 import com.bolsines.adapter.IAdaptadorDatosLocalización;
 import com.bolsines.client.ServicioXRT4500L;
 import com.bolsines.dto.external.XtrBolsinLocationItemDto;
 import com.bolsines.dto.external.XtrBolsinLocationResponseDto;
 
-
 import tools.jackson.databind.ObjectMapper;
-// import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDateTime;
-
-/* import org.springframework.beans.factory.annotation.Value;
-import lombok.*;
-import java.time.DateTimeException;
-import java.util.Arrays;
-import java.util.Optional;
-import com.bolsines.model.Bolsin; */
 
 // @RequiredArgsConstructor
 public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
@@ -63,9 +53,9 @@ public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
 
     public void solicitarDatosLocalizacion() {
         this.datosLocalizacionRecibidos = servicioXRT4500L.getBolsinLocation(
-                this.apiKey,
-                this.nroBolsin.intValue(),
-                this.codigoCMO
+            this.apiKey,
+            this.nroBolsin.intValue(),
+            this.codigoCMO
         );
     }
 
@@ -91,14 +81,12 @@ public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
             // como el endpoint solo recibe uno a la vez devolvemos solo el primero
             XtrBolsinLocationItemDto item = dto.items().getFirst();
 
-            // 
             LocalDateTime fechaAdaptada = this.adaptarFechaHora(item.fechaHoraUltimaActualizacion());
-
             this.datosLocalizacionAdaptados = new Object[]{
-                    item.numeroBolsin(),
-                    item.latitud(),
-                    item.longitud(),
-                    fechaAdaptada
+                item.numeroBolsin(),
+                item.latitud(),
+                item.longitud(),
+                fechaAdaptada
             };
         } catch (Exception e) {
             throw new RuntimeException("Error adaptando JSON de XTR-4500L", e);

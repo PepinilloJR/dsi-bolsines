@@ -1,8 +1,6 @@
 package com.bolsines.controller;
 
 import com.bolsines.dto.response.BolsinResponse;
-// import java.util.List;
-// import com.bolsines.dto.response.ComisionResponse;
 import com.bolsines.dto.response.IniciarResponse;
 import com.bolsines.dto.response.NotificarEmailResponse;
 import com.bolsines.service.GestorSeguimientodeBolsin;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class PantallaSeguimientoDeBolsin {
+
+    //! DESACOPLAMOS FRONTEND DE BACKEND POR ESO FALTAN ATRIBUTOS 
 
     private final GestorSeguimientodeBolsin gestorSeguimientodeBolsin;
 
@@ -51,4 +50,6 @@ public class PantallaSeguimientoDeBolsin {
         var c = gestorSeguimientodeBolsin.tomarConfirmacionCorreo();
         return ResponseEntity.ok(c);
     }
+
+    
 }
