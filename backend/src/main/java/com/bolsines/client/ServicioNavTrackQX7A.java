@@ -8,14 +8,14 @@ import lombok.Data;
 @Data
 public class ServicioNavTrackQX7A {
 
-    private static final String BASE_URL = "http://localhost:8081";
+    private static final String baseUrl = "http://localhost:8081";
 
     private final RestClient restClient;
     private final String defaultApiKey;
 
     public ServicioNavTrackQX7A(String apiKey) {
         this.restClient = RestClient.builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .build();
         this.defaultApiKey = apiKey;
     }
