@@ -1,13 +1,33 @@
+import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Package, LogIn, User } from "lucide-react";
 
-export const Layout = () => {
-  // Simulación de sesión activa (coincide con el seed del backend)
-  const usuarioLogueado = {
+const USUARIOS_MOCK = {
+  "11111111-1111-1111-1111-111111111111": {
+    sesionId: "11111111-1111-1111-1111-111111111111",
+    username: "jperez",
     nombre: "Juan Pérez",
     email: "jperez@srt.gob.ar",
     comision: "CM-CBA-01",
-  };
+    rol: "GCM",
+  },
+  "11111111-1111-1111-1111-111111111112": {
+    sesionId: "11111111-1111-1111-1111-111111111112",
+    username: "mgomez",
+    nombre: "María Gómez",
+    email: "mgomez@srt.gob.ar",
+    comision: "CM-ROS-02",
+    rol: "OPERADOR",
+  },
+} as const;
+
+type SesionKey = keyof typeof USUARIOS_MOCK;
+
+export const Layout = () => {
+  const [sesionKey, setSesionKey] = useState<SesionKey>(
+    "11111111-1111-1111-1111-111111111111"
+  );
+  const usuarioLogueado = USUARIOS_MOCK[sesionKey];
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -27,9 +47,26 @@ export const Layout = () => {
             <div>
               {usuarioLogueado ? (
                 <div className="flex items-center gap-3">
+                  {/* Selector rápido de sesión mock */}
+                  <select
+                    aria-label="Cambiar sesión simulada"
+                    value={sesionKey}
+                    onChange={(e) => setSesionKey(e.target.value as SesionKey)}
+                    className="text-xs bg-gray-100 border border-gray-300 text-gray-700 rounded-md px-2 py-1.5 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                  >
+                    {Object.values(USUARIOS_MOCK).map((u) => (
+                      <option key={u.sesionId} value={u.sesionId}>
+                        {u.nombre} ({u.comision})
+                      </option>
+                    ))}
+                  </select>
+
                   <div className="text-right hidden sm:block">
                     <p className="text-sm font-medium text-gray-800 leading-none">
-                      {usuarioLogueado.nombre}
+                      {usuarioLogueado.nombre}{" "}
+                      <span className="text-[10px] uppercase bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded ml-1">
+                        {usuarioLogueado.rol}
+                      </span>
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
                       {usuarioLogueado.email} ·{" "}
@@ -38,6 +75,7 @@ export const Layout = () => {
                       </span>
                     </p>
                   </div>
+
                   <div className="bg-blue-50 border border-blue-200 p-2 rounded-full text-blue-600">
                     <User className="w-4 h-4" />
                   </div>
@@ -55,7 +93,7 @@ export const Layout = () => {
 
       {/* --- CONTENIDO DE CADA VISTA --- */}
       <main className="grow">
-        <Outlet />
+        <Outlet context={{ usuarioLogueado }} />
       </main>
 
       {/* --- FOOTER --- */}
