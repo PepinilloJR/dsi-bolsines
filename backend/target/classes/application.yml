@@ -15,7 +15,8 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password: ""
-
+  gps:
+    base-url: ${GPS_BASE_URL:http://localhost:8081}
   jpa:
     hibernate:
       ddl-auto: update  # update

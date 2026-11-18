@@ -37,7 +37,7 @@ for service in "${SERVICES[@]}"; do
     # Construir imagen
     IMAGE="pepinillojr/tpi-bolsines:$service"
 
-    docker build --no-cache -t "$IMAGE" .
+    docker build -t "$IMAGE" .
 
     # Publicar imagen
     if [ "$LOGGED_IN" = true ]; then

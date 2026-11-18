@@ -4,10 +4,8 @@ services:
     build:
       context: ./agps
       dockerfile: Dockerfile
-    image: pepinillojr/dsi-bolsines-agps
+    image: pepinillojr/tpi-bolsines:agps
     container_name: bolsines-agps
-    environment:
-      - GPS_API_URL=http://agps:8081
     ports:
       - "8081:8081"
     restart: unless-stopped
@@ -18,6 +16,8 @@ services:
       dockerfile: Dockerfile
     image: pepinillojr/tpi-bolsines:backend
     container_name: bolsines-backend
+    environment:
+      - GPS_BASE_URL=http://agps:8081
     ports:
       - "8080:8080"
     restart: unless-stopped
