@@ -19,7 +19,7 @@ spring:
     base-url: ${GPS_BASE_URL:http://localhost:8081}
   jpa:
     hibernate:
-      ddl-auto: update  # update
+      ddl-auto: create-drop  # update
     show-sql: true
 
   h2:

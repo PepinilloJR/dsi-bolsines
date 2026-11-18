@@ -61,7 +61,7 @@ public class DataSeedConfig {
             ComisionMedica cmLpl01 = comisionMedicaRepository.save(new ComisionMedica(
                     "CM-LPL-01", "Calle 48 N° 630, La Plata", "lpl01@srt.gob.ar", "Comisión Médica La Plata", "0221-4824400"));
             ComisionMedica cmCba03 = comisionMedicaRepository.save(new ComisionMedica(
-                    "CM-CBA-01", "Av. Emilio Olmos 550, Córdoba", "cba03@srt.gob.ar", "Comisión Médica Córdoba Centro Emilio Olmos", "0351-4210001"));
+                    "CM-CBA-03", "Av. Emilio Olmos 550, Córdoba", "cba03@srt.gob.ar", "Comisión Médica Córdoba Centro Emilio Olmos", "0351-4210001"));
 
             // 4. Empleados (asignados a CM-CBA-01 y CM-ROS-02)
             Empleado emp1 = empleadoRepository.save(new Empleado(
