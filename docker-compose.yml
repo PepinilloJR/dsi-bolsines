@@ -18,6 +18,8 @@ services:
     container_name: bolsines-backend
     environment:
       - GPS_BASE_URL=http://agps:8081
+      # - SESION_ACTIVA=11111111-1111-1111-1111-111111111112
+      - SESION_ACTIVA=11111111-1111-1111-1111-111111111111
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -28,6 +30,8 @@ services:
       dockerfile: Dockerfile
     image: pepinillojr/tpi-bolsines:frontend
     container_name: bolsines-frontend
+    environment:
+      - SESION_ACTIVA=11111111-1111-1111-1111-111111111111
     ports:
       - "3000:80"
     depends_on:

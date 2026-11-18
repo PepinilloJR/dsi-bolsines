@@ -80,7 +80,7 @@ public class GestorSeguimientodeBolsin {
     } */
 
     private void cargarDatos() {
-        UUID sesionTestId = UUID.fromString("11111111-1111-1111-1111-111111111111");
+        UUID sesionTestId = UUID.fromString(System.getenv("SESION_ACTIVA"));
         this.sesionActual = sesionRepository.findById(sesionTestId).orElse(null);
 
         this.empleados = this.empleadoRepository.findAllConRolYComisionMedica();

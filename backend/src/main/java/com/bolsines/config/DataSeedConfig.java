@@ -72,7 +72,7 @@ public class DataSeedConfig {
 
             // 5. Usuarios
             Usuario user1 = usuarioRepository.save(new Usuario("jperez", "1234", emp1));
-            usuarioRepository.save(new Usuario("mgomez", "1234", emp2));        // user 2
+            Usuario user2 = usuarioRepository.save(new Usuario("mgomez", "1234", emp2));        // user 2
             usuarioRepository.save(new Usuario("mGerente", "1234", emp3));        // user 3
 
             // 6. Sesión activa (fechaHoraFin == null) para jperez (CM-CBA-01)
@@ -82,6 +82,13 @@ public class DataSeedConfig {
             sesionActiva.setFechaHoraFin(null);
             sesionActiva.setUsuario(user1);
             sesionActiva = sesionRepository.save(sesionActiva);
+
+            Sesion sesionActiva2 = new Sesion();
+            sesionActiva2.setId(UUID.fromString("11111111-1111-1111-1111-111111111112"));
+            sesionActiva2.setFechaHoraInicio(LocalDateTime.now().minusHours(1));
+            sesionActiva2.setFechaHoraFin(null);
+            sesionActiva2.setUsuario(user2);
+            sesionActiva2 = sesionRepository.save(sesionActiva2);
 
             // 7. Bolsines respetando exactamente los IDs, orígenes, destinos, coordenadas y fechas del mock GPS
             Bolsin b101 = crearBolsin(101L, 9001, 4.5, cmCba01, cmRos02, -31.4201, -64.1888, LocalDateTime.of(2026, 3, 7, 12, 30, 0), estadoEnviado);
