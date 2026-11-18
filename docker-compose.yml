@@ -1,0 +1,35 @@
+services:
+
+  agps:
+    build:
+      context: ./agps
+      dockerfile: Dockerfile
+    image: pepinillojr/dsi-bolsines-agps
+    container_name: bolsines-agps
+    environment:
+      - GPS_API_URL=http://agps:8081
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: pepinillojr/tpi-bolsines:backend
+    container_name: bolsines-backend
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: pepinillojr/tpi-bolsines:frontend
+    container_name: bolsines-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
