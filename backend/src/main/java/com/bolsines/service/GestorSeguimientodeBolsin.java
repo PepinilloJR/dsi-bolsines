@@ -115,6 +115,7 @@ public class GestorSeguimientodeBolsin {
     }
 
     private ComisionMedica buscarCMActualEmpleado() {
+  
         // esto no es parte del diagrama, pero era un check por si no se tenían los datos en memoria al iniciar
         // a veces pasaba
         if (this.sesionActual == null) { cargarDatos(); }
@@ -170,13 +171,13 @@ public class GestorSeguimientodeBolsin {
 
         for (int i = 0; i < this.bolsinesEnviados.size(); i++) {
             Bolsin b = this.bolsinesEnviados.get(i);
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.NUMERO_BOLSIN] = b.getNumeroBolsin().intValue();
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.LATITUD] = b.getLatitud();
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.LONGITUD] = b.getLongitud();
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.FECHA_HORA_ULTIMA_ACTUALIZACION] =
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.nroBolsin] = b.getNumeroBolsin().intValue();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.latitud] = b.getLatitud();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.longitud] = b.getLongitud();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.fechaHoraUltimaActualizacion] =
                     b.getFecha() != null ? b.getFecha().toString() : null;
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.NUMERO_PRECINTO] = b.getNumeroPrecinto();
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.CODIGO_CM_DESTINO] =
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.nroPrecinto] = b.getNumeroPrecinto();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.codCMDestino] =
                     b.getDestino() != null ? b.getDestino().getCodigo() : null;
         }
 
