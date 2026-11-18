@@ -42,7 +42,7 @@ public class GestorSeguimientodeBolsin {
     );
 
     //! =========== Atributos del diagrama =========================
-    private Sesion actual;
+    private Sesion sesionActual;
     private List<Bolsin> bolsinesEnviados;
     private ComisionMedica CMOrigen;
     private Bolsin bolsinSeleccionado;
@@ -78,7 +78,7 @@ public class GestorSeguimientodeBolsin {
 
     private void cargarDatos() {
         UUID sesionTestId = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        this.actual = sesionRepository.findById(sesionTestId).orElse(null);
+        this.sesionActual = sesionRepository.findById(sesionTestId).orElse(null);
 
         this.empleados = this.empleadoRepository.findAllConRolYComisionMedica();
     }
@@ -113,13 +113,13 @@ public class GestorSeguimientodeBolsin {
 
     private ComisionMedica buscarCMActualEmpleado() {
         // stupid check
-        if (this.actual == null) {
+        if (this.sesionActual == null) {
             cargarDatos();
         }
-        if (this.actual == null) {
+        if (this.sesionActual == null) {
             return null;
         }
-        return this.actual.getUsuarioLogueado();
+        return this.sesionActual.getUsuarioLogueado();
         // ComisionMedica cm = this.actual.getCMUsuarioLogueado();
     }
 
@@ -171,13 +171,13 @@ public class GestorSeguimientodeBolsin {
 
         for (int i = 0; i < this.bolsinesEnviados.size(); i++) {
             Bolsin b = this.bolsinesEnviados.get(i);
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.NUMERO_BOLSIN] = b.getNumeroBolsin().intValue();
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.LATITUD] = b.getLatitud();
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.LONGITUD] = b.getLongitud();
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.FECHA_HORA_ULTIMA_ACTUALIZACION] =
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.nroBolsin] = b.getNumeroBolsin().intValue();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.latitud] = b.getLatitud();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.longitud] = b.getLongitud();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.fechaHoraUltimaActualizacion] =
                     b.getFecha() != null ? b.getFecha().toString() : null;
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.NUMERO_PRECINTO] = b.getNumeroPrecinto();
-            matrizLocalizaciones[i][InterfazServicioGoogleMaps.CODIGO_CM_DESTINO] =
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.nroPrecinto] = b.getNumeroPrecinto();
+            matrizLocalizaciones[i][InterfazServicioGoogleMaps.codCMDestino] =
                     b.getDestino() != null ? b.getDestino().getCodigo() : null;
         }
 
