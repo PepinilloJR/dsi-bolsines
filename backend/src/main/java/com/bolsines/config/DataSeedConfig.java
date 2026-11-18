@@ -60,12 +60,14 @@ public class DataSeedConfig {
                     "CM-MDQ-01", "Av. Independencia 2100, Mar del Plata", "mdq01@srt.gob.ar", "Comisión Médica Mar del Plata", "0223-4956600"));
             ComisionMedica cmLpl01 = comisionMedicaRepository.save(new ComisionMedica(
                     "CM-LPL-01", "Calle 48 N° 630, La Plata", "lpl01@srt.gob.ar", "Comisión Médica La Plata", "0221-4824400"));
+            ComisionMedica cmCba03 = comisionMedicaRepository.save(new ComisionMedica(
+                    "CM-CBA-01", "Av. Emilio Olmos 550, Córdoba", "cba03@srt.gob.ar", "Comisión Médica Córdoba Centro Emilio Olmos", "0351-4210001"));
 
             // 4. Empleados (asignados a CM-CBA-01 y CM-ROS-02)
             Empleado emp1 = empleadoRepository.save(new Empleado(
                     "Pérez", "jperez@srt.gob.ar", "Juan", rolGcm, cmCba01));
             Empleado emp2 = empleadoRepository.save(new Empleado(
-                    "Gómez", "mgomez@srt.gob.ar", "María", rolOperador, cmRos02));
+                    "Gómez", "mgomez@srt.gob.ar", "María", rolOperador, cmCba03));
 
             Empleado emp3 = empleadoRepository.save(new Empleado(
                     "Gerente", "gerente@srt.gob.ar", "Jorge rente", rolGcm, cmRos02));
