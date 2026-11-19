@@ -100,12 +100,6 @@ export const Layout = () => {
       <footer className="bg-gray-900 text-gray-400 py-8 text-center text-sm">
         <p>© {new Date().getFullYear()} LogísticaApp. Todos los derechos reservados.</p>
       </footer>
-      <footer className="bg-gray-900 text-gray-400 py-8 text-center text-sm">
-        <p>© {new Date().getFullYear()} LogísticaApp. Todos los derechos reservados.</p>
-      </footer>
-      <footer className="bg-gray-900 text-gray-400 py-8 text-center text-sm">
-        <p>© {new Date().getFullYear()} LogísticaApp. Todos los derechos reservados.</p>
-      </footer>
     </div>
   );
 };
