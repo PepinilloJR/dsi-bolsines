@@ -62,13 +62,10 @@ public class Bolsin {
     }
 
     public boolean sosEnviado() {
-        if (this.cambiosEstado == null) {
-            return false;
-        }
-        // 
+        if (this.cambiosEstado == null) return false;
+
         for (CambioEstado cambio : this.cambiosEstado) {
             // delega por patron experto a cambio de estado de  cada uno
-            // 
             if (cambio.sosActual()) {
                 return cambio.sosEnviado();
             }
@@ -96,9 +93,7 @@ public class Bolsin {
         return this.fecha;
     }
 
-
-
-
+    // cumplir diagrama maquina de estados
     public void modificarBolsin(
             LocalDateTime fecha,
             Integer numeroPrecinto,
@@ -126,8 +121,6 @@ public class Bolsin {
 
     public void registrarRecepcionDeBolsin() {
     }
-
-
 
     /* getter y setters */
     public Integer getNumeroPrecinto() {

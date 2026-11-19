@@ -2,7 +2,6 @@ package com.bolsines.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -10,7 +9,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "sesiones")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Sesion {
@@ -45,17 +43,37 @@ public class Sesion {
         return null;
     }
 
+    // Getters y Setters estándar
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public LocalDateTime getFechaHoraFin() {
-        return fechaHoraFin;
+        return this.fechaHoraFin;
+    }
+
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
     }
 
     public LocalDateTime getFechaHoraInicio() {
-        return fechaHoraInicio;
+        return this.fechaHoraInicio;
     }
 
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
 
-    /* public ComisionMedica getCMUsuarioLogueado() {
-        return this.getUsuario().getCMUsuarioLogueado();
-    } */
+    public Usuario getUsuario() {
+        return this.usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

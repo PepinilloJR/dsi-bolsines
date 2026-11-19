@@ -1,12 +1,10 @@
 package com.bolsines.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "empleados")
-@Data
 @NoArgsConstructor
 public class Empleado {
 
@@ -47,11 +45,49 @@ public class Empleado {
         return this.comisionMedica;
     }
 
+    public boolean sosGCM() {
+        return this.rol != null && this.rol.esGCM();
+    }
+
+    // Getters y Setters estándar
+
     public String getEmail() {
         return this.email;
     }
 
-    public boolean sosGCM() {
-        return this.rol != null && this.rol.esGCM();
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getApellido() {
+        return this.apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Rol getRol() {
+        return this.rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public ComisionMedica getComisionMedica() {
+        return this.comisionMedica;
+    }
+
+    public void setComisionMedica(ComisionMedica comisionMedica) {
+        this.comisionMedica = comisionMedica;
     }
 }

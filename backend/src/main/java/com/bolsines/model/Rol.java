@@ -2,12 +2,10 @@ package com.bolsines.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "roles")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Rol {
@@ -18,15 +16,25 @@ public class Rol {
 
     private String descripcion;
 
-    public String getDescripcion() {
-        return this.descripcion;
+    public boolean esGCM() {
+        return "GCM".equalsIgnoreCase(this.nombre);
     }
+
+    // Getters y Setters estándar
 
     public String getNombre() {
         return this.nombre;
     }
 
-    public boolean esGCM() {
-        return "GCM".equalsIgnoreCase(this.nombre);
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return this.descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }
