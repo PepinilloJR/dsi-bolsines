@@ -2,11 +2,13 @@ package com.bolsines.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "comisiones_medicas")
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
 public class ComisionMedica {
 

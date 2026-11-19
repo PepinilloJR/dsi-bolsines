@@ -24,6 +24,9 @@ import com.bolsines.repository.IBolsinRepository;
 import com.bolsines.repository.IEmpleadoRepository;
 import com.bolsines.repository.ISesionRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class GestorSeguimientodeBolsin {
 
@@ -80,10 +83,27 @@ public class GestorSeguimientodeBolsin {
     } */
 
     private void cargarDatos() {
-        UUID sesionTestId = UUID.fromString(System.getenv("SESION_ACTIVA"));
+        log.info("Iniciando carga de datos de sesión y empleados...");
+
+        String envSesion = System.getenv("SESION_ACTIVA");
+        if (envSesion == null || envSesion.isBlank()) {
+            envSesion = "11111111-1111-1111-1111-111111111111";
+            log.warn("Variable de entorno SESION_ACTIVA no encontrada o vacía. Usando UUID por defecto: {}", envSesion);
+        } else {
+            log.info("Variable de entorno SESION_ACTIVA detectada: {}", envSesion.trim());
+        }
+
+        UUID sesionTestId = UUID.fromString(envSesion.trim());
         this.sesionActual = sesionRepository.findById(sesionTestId).orElse(null);
 
+        if (this.sesionActual != null) {
+            log.info("Sesión cargada correctamente con ID: {}", this.sesionActual.getId());
+        } else {
+            log.error("No se encontró ninguna sesión en la base de datos con el ID: {}", sesionTestId);
+        }
+
         this.empleados = this.empleadoRepository.findAllConRolYComisionMedica();
+        log.info("Se cargaron {} empleados desde la base de datos.", this.empleados != null ? this.empleados.size() : 0);
     }
 
     public IniciarResponse consultarUbicacionBolsines() {
@@ -112,9 +132,13 @@ public class GestorSeguimientodeBolsin {
     }
 
     private ComisionMedica buscarCMActualEmpleado() {
-        // check preventivo si no estaban los datos al iniciar no forma parte del diagrama
-        if (this.sesionActual == null) { cargarDatos(); }
-        if (this.sesionActual == null) { return null; }
+        // Check preventivo: si no estaban los datos al iniciar (no forma parte del diagrama)
+        if (this.sesionActual == null) {
+            cargarDatos();
+            if (this.sesionActual == null) {
+                return null;
+            }
+        }
         
         return this.sesionActual.getUsuarioLogueado();
     }

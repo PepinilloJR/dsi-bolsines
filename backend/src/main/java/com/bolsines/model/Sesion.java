@@ -2,6 +2,7 @@ package com.bolsines.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Table(name = "sesiones")
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Sesion {
 
     @Id

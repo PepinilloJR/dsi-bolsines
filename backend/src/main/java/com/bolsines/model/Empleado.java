@@ -1,11 +1,13 @@
 package com.bolsines.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "empleados")
 @NoArgsConstructor
+@Data
 public class Empleado {
 
     @Id
