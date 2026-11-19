@@ -28,9 +28,14 @@ export const HomeScreen = () => {
                 Consultar Ubicación Bolsines
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <button className="flex items-center justify-center gap-2 bg-white text-gray-700 border-2 border-gray-200 px-8 py-3 rounded-lg font-semibold hover:border-gray-300 hover:bg-gray-50 transition-all">
+              <a
+                href="/PPAI2026_3K1_G11_E2_Disenio.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-white text-gray-700 border-2 border-gray-200 px-8 py-3 rounded-lg font-semibold hover:border-gray-300 hover:bg-gray-50 transition-all"
+              >
                 Ver documentación
-              </button>
+              </a>
             </div>
           </div>
 
@@ -53,48 +58,35 @@ export const HomeScreen = () => {
         </div>
       </div>
 
-
-
-
-
-      {/* --- TARJETAS DE ACCESO RÁPIDO --- */}
+      {/* --- TARJETAS DE ACCESO RÁPIDO (SIN LINKS) --- */}
       <div className="bg-white border-t border-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">Accesos Rápidos</h2>
           <div className="grid md:grid-cols-3 gap-6">
 
-            <Link
-              to="/bolsines"
-              className="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group block"
-            >
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-4">
                 <Package className="w-6 h-6" />
               </div>
               <h3 className="font-bold text-gray-800 text-lg mb-2">Bolsines</h3>
               <p className="text-gray-500 text-sm">Revisa el inventario actual y selecciona los bolsines para despacho.</p>
-            </Link>
+            </div>
 
-            <Link
-              to="/sucursales"
-              className="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group block"
-            >
-              <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-4">
                 <MapPin className="w-6 h-6" />
               </div>
               <h3 className="font-bold text-gray-800 text-lg mb-2">Sucursales</h3>
               <p className="text-gray-500 text-sm">Gestiona los puntos de entrega y el estado de cada sucursal en el mapa.</p>
-            </Link>
+            </div>
 
-            <Link
-              to="/flota"
-              className="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group block"
-            >
-              <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center mb-4">
                 <Truck className="w-6 h-6" />
               </div>
               <h3 className="font-bold text-gray-800 text-lg mb-2">Flota de Vehículos</h3>
               <p className="text-gray-500 text-sm">Asigna vehículos, controla capacidades y monitorea las rutas de reparto.</p>
-            </Link>
+            </div>
 
           </div>
         </div>

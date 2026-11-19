@@ -13,6 +13,7 @@ import {
   Search,
   Filter,
   X,
+  PackageOpen
 } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
@@ -308,8 +309,16 @@ export const ComisionMedicaScreen = () => {
         </div>
 
         {bolsines.length === 0 && !errorBolsines ? (
-          <div className="p-8 text-center text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-            No hay bolsines registrados para esta comisión.
+          <div className="flex flex-col items-center justify-center p-12 text-center bg-gray-50/80 rounded-2xl border-2 border-dashed border-gray-200 my-4">
+            <div className="w-16 h-16 bg-blue-100/70 text-blue-600 rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+              <PackageOpen className="w-8 h-8" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-800 mb-1">
+              Sin bolsines en tránsito
+            </h3>
+            <p className="text-sm text-gray-500 max-w-md">
+              Por el momento no hay bolsines enviados ni pendientes de seguimiento para esta comisión médica.
+            </p>
           </div>
         ) : bolsinesFiltrados.length === 0 ? (
           <div className="p-8 text-center text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">
@@ -378,7 +387,7 @@ export const ComisionMedicaScreen = () => {
 
             {/* --- MAPA DERECHA --- */}
             <div
-              className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm"
+              className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm z-10"
               style={{ height: 480 }}
             >
               <MapContainer
