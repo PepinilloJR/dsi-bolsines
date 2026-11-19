@@ -37,7 +37,7 @@ public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
         return this.apiKey;
     }
 
-    // metodo polimorfico?¿ o como se diga
+    // metodo polimorfico
     public Object[] recibirDatosLocalizacion(Long nroBolsin, String codigoCM) {
         this.nroBolsin = nroBolsin;
         this.codigoCMO = codigoCM;
@@ -45,7 +45,7 @@ public class AdaptadorDatosXTR implements IAdaptadorDatosLocalización {
         // comunicacion con el client externo
         solicitarDatosLocalizacion();
 
-        // metodo del adapter (?????????????????????????????????????)
+        // metodo del adapter
         adaptarDatosLocalizacion();
 
         return datosLocalizacionAdaptados;

@@ -21,10 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PantallaSeguimientoDeBolsin {
 
-    //! DESACOPLAMOS FRONTEND DE BACKEND POR ESO FALTAN ATRIBUTOS 
+    //! DESACOPLAMOS FRONTEND DE BACKEND POR ESO FALTAN ATRIBUTOS y/o metodos
 
     private final GestorSeguimientodeBolsin gestorSeguimientodeBolsin;
 
+    // primer metodo inicia todo
     @GetMapping("/iniciar")
     public ResponseEntity<IniciarResponse> opcionConsultarUbicacionBolsines() {
         var c = habilitarPantallaSeguimientoBolsin();
@@ -46,10 +47,8 @@ public class PantallaSeguimientoDeBolsin {
     @PostMapping("/confirmar-correo")
     public ResponseEntity<NotificarEmailResponse> opcionConfirmarCorreo() {
 
-        // retorna un notifical response para notificarEjecucionExitosa aunque totalmente inchequeable esto
+        // retorna un notificarResponse para notificar Ejecucion Exitosa
         var c = gestorSeguimientodeBolsin.tomarConfirmacionCorreo();
         return ResponseEntity.ok(c);
     }
-
-    
 }

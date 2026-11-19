@@ -18,10 +18,6 @@ public class InterfazGPSTracker {
         "sk_nav_7b61d9e4c3a2485fae10c77d5b2f", // NavTrack QX-7A
         "sk_geo_f2d84a1c9e7345b8a6d1c3f0972e" // GeoPulse MTR-900
     };
-   // private Object[][] bolsinLocation;
-   // private int nroBolsin;
-   // private String codigoCMO;
-  //  private String codigoCMD;
 
     public Object[] enviarDatosLocalizacion(String apiKey, Long nroBolsin, String codigoCM) {
         IAdaptadorDatosLocalización adaptadorDatosLocalización = crearAdaptador(apiKey);

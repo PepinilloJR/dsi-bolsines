@@ -68,12 +68,12 @@ public class GestorSeguimientodeBolsin {
         this.bolsinSeleccionado = null;
     }
 
-    // STUPID FETCH TO VALID THIS STUPID DIAGRAMS TO THIS FUCKING STUPID SUBJECT
+    // para recuperar en memoria inicialmente algunos de los datos semilla que coinciden con los
+    // bolsines del ms gps dado por los profesores
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationEvent() {
         cargarDatos();
     }
-    
     /* @EventListener(ContextRefreshedEvent.class)
     public void onApplicationEvent(ContextRefreshedEvent event) {
         cargarDatos();
@@ -88,13 +88,12 @@ public class GestorSeguimientodeBolsin {
 
     public IniciarResponse consultarUbicacionBolsines() {
         ComisionMedica comisionResponse = this.buscarCMActualEmpleado();
-        // por algun motivo aca quieren que guardemos esta referncia o es o parece qsy nadie sabe del verbo saber
         this.cmOrigen = comisionResponse;
 
-        // retorna void y setea en memoria this.bolsinesEnviado (???????????????????????????)
+        // retorna void y setea en memoria this.bolsinesEnviado
         this.buscarBolsinesEnviado();
 
-        // esto es el metodo que envuelve llamar a los metodos del adapter
+        // envuelve metodos que llaman al adapter
         this.buscarLocalizacionesBolsines();
 
         // transformar para la respuesta y preparar una respuesta gigante unificaada, charlable si dividirlo
@@ -102,9 +101,7 @@ public class GestorSeguimientodeBolsin {
                 .map(BolsinResponse::fromEntity)
                 .toList();
 
-        // terminar de ver la parte de Google, realmente no hace falta que haga nada porq ue el front 
-        // trabaja con latitudes y longitudes pero no se que hizo joaco capaz salio algo bueno quien sabe
-        // que sabre yo
+        // terminar de ver la parte de Google
         Object[][] mapa = this.obtenerMapa();
 
         return new IniciarResponse(
@@ -115,13 +112,10 @@ public class GestorSeguimientodeBolsin {
     }
 
     private ComisionMedica buscarCMActualEmpleado() {
-  
-        // esto no es parte del diagrama, pero era un check por si no se tenían los datos en memoria al iniciar
-        // a veces pasaba
+        // check preventivo si no estaban los datos al iniciar no forma parte del diagrama
         if (this.sesionActual == null) { cargarDatos(); }
-        if (this.sesionActual == null) {
-            return null;
-        }
+        if (this.sesionActual == null) { return null; }
+        
         return this.sesionActual.getUsuarioLogueado();
     }
 
@@ -129,13 +123,12 @@ public class GestorSeguimientodeBolsin {
     public void buscarBolsinesEnviado() {
         // Trae todos los bolsines con sus objetos relacionados en memoria
         List<Bolsin> bolsines = bolsinRepository.findAllConEstados();
-        // como variable porque lo dijo FRAN 
+
         this.bolsinesEnviados.clear();            // limpiar lista sino se acumula en memoria.
 
         for (Bolsin bolsin : bolsines) {
             // Filtra por cambiosEstado con Estados en Enviado; 
             if (bolsin.sosEnviado() && bolsin.esTuCMOrigen(this.cmOrigen)) {
-
                 bolsin.obtenerNumeroBolsin();
                 this.bolsinesEnviados.add(bolsin);
             }
@@ -186,7 +179,6 @@ public class GestorSeguimientodeBolsin {
 
         return mapa;
     }
-
 
 
     // PASO SELEECIONAR BOLSIN
@@ -270,5 +262,4 @@ public class GestorSeguimientodeBolsin {
 
         return true;
     }
-
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ServicioMTR900 {
 
-    private static final String BASE_URL = "http://localhost:8081";
+    private static final String BASE_URL = System.getenv("GPS_BASE_URL");
 
     private final RestClient restClient;
     private final String defaultApiKey;

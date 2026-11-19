@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class ServicioNavTrackQX7A {
 
-    private static final String baseUrl = "http://localhost:8081";
+    private static final String baseUrl = System.getenv("GPS_BASE_URL");
 
     private final RestClient restClient;
     private final String defaultApiKey;

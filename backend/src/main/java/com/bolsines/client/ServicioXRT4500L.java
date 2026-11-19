@@ -15,8 +15,9 @@ public class ServicioXRT4500L {
     private final String defaultApiKey;
 
     public ServicioXRT4500L(String apiKey) {
+        // Fallback por defecto cuando no se ejecuta con docker
         if (BASE_URL == null || BASE_URL.isBlank()) {
-            BASE_URL = "http://localhost:8081"; // Fallback por defecto cuando no se ejecuta con docker
+            BASE_URL = "http://localhost:8081"; 
         }
         this.restClient = RestClient.builder()
                 .baseUrl(BASE_URL)
