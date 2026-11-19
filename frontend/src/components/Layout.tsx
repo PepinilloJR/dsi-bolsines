@@ -32,7 +32,7 @@ export const Layout = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
       {/* --- BARRA DE NAVEGACIÓN --- */}
-      <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
+      <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <Link to="/" className="flex items-center gap-2">
@@ -97,6 +97,12 @@ export const Layout = () => {
       </main>
 
       {/* --- FOOTER --- */}
+      <footer className="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>© {new Date().getFullYear()} LogísticaApp. Todos los derechos reservados.</p>
+      </footer>
+      <footer className="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>© {new Date().getFullYear()} LogísticaApp. Todos los derechos reservados.</p>
+      </footer>
       <footer className="bg-gray-900 text-gray-400 py-8 text-center text-sm">
         <p>© {new Date().getFullYear()} LogísticaApp. Todos los derechos reservados.</p>
       </footer>
